@@ -158,6 +158,40 @@
       color: #4db4ff;
     }
 
+    .hi2p-label {
+      display: inline-block;
+      padding: 6px 14px;
+      margin-bottom: 8px;
+      border: 1px solid #2d6ca5;
+      border-radius: 20px;
+      color: #76c3ff;
+      font-size: 12px;
+      font-weight: bold;
+      letter-spacing: 1.4px;
+    }
+    
+    .hi2p-features {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 24px 0;
+    }
+    
+    .hi2p-features span {
+      background: #102b4d;
+      border: 1px solid #28527d;
+      border-radius: 20px;
+      padding: 8px 14px;
+      color: #b9dcff;
+      font-size: 14px;
+    }
+
+    .hi2p-tech {
+      color: #76c3ff;
+      font-size: 14px;
+    }
+
     .button {
       display: inline-block;
       margin-top: 20px;
@@ -306,20 +340,31 @@
     <h2 class="section-title">Featured Work</h2>
 
     <div class="hi2p">
+
+  <div class="hi2p-label">FEATURED PRODUCT</div>
+
       <h3>HI2P</h3>
-
+    
       <h4>AI-Driven IT Operations & Incident Intelligence Platform</h4>
-
+    
       <p>
         HI2P transforms incoming IT tickets into operational intelligence using
         AI classification, severity assessment, intelligent routing,
         incident correlation, workflow automation, and role-based operational insight.
       </p>
-
-      <p>
-        Built with Python, PyTorch, FastAPI, REST APIs, data analytics,
-        workflow automation, and modern web technologies.
+    
+      <div class="hi2p-features">
+        <span>AI Classification</span>
+        <span>Incident Correlation</span>
+        <span>Severity Intelligence</span>
+        <span>Workflow Automation</span>
+        <span>Operational Insight</span>
+      </div>
+    
+      <p class="hi2p-tech">
+        Python • PyTorch • FastAPI • REST APIs • Data Analytics
       </p>
+    
     </div>
   </section>
 
