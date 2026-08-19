@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://itlogicconsultants.com/sitemap.xml
