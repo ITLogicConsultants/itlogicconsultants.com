@@ -83,9 +83,41 @@
         realistic hospital and enterprise IT operations.
       </p>
 
-      <button class="button">
-        Analyze Sample Tickets
-      </button>
+      <button class="button" onclick="analyzeTickets()">
+  Analyze Sample Tickets
+    </button>
+    
+    <div id="results" style="display:none;" class="panel">
+      <h2>Weekly Operational Intelligence</h2>
+    
+      <p><strong>Tickets Analyzed:</strong> 25</p>
+      <p><strong>Departments Affected:</strong> 4</p>
+      <p><strong>Recurring Patterns:</strong> 2</p>
+    
+      <h3>What Happened</h3>
+      <p>
+        Network and Wi-Fi related incidents increased during the week,
+        affecting multiple operational areas.
+      </p>
+    
+      <h3>Why It Matters</h3>
+      <p>
+        Similar issues appearing across multiple departments may indicate
+        a shared infrastructure problem rather than isolated user incidents.
+      </p>
+    
+      <h3>Needs Attention</h3>
+      <p>
+        Review the common network infrastructure serving the affected areas
+        before additional service disruption occurs.
+      </p>
+    </div>
+    
+    <script>
+function analyzeTickets() {
+  document.getElementById("results").style.display = "block";
+}
+</script>
     </div>
 
   </div>
