@@ -90,9 +90,9 @@
     <div id="results" style="display:none;" class="panel">
       <h2>Weekly Operational Intelligence</h2>
     
-      <p><strong>Tickets Analyzed:</strong> 25</p>
-      <p><strong>Departments Affected:</strong> 4</p>
-      <p><strong>Recurring Patterns:</strong> 2</p>
+      <p><strong>Tickets Analyzed:</strong> <span id="ticket-count">0</span></p>
+      <p><strong>Departments Affected:</strong> <span id="department-count">0</span></p>
+      <p><strong>Recurring Patterns:</strong> <span id="pattern-count">0</span></p>
     
       <h3>What Happened</h3>
       <p>
@@ -114,8 +114,42 @@
     </div>
     
     <script>
+
+    const sampleTickets = [
+      { id: "T001", department: "Emergency Department", type: "wifi", severity: "medium" },
+      { id: "T002", department: "Radiology", type: "wifi", severity: "medium" },
+      { id: "T003", department: "ICU", type: "network", severity: "high" },
+      { id: "T004", department: "Emergency Department", type: "network", severity: "high" },
+      { id: "T005", department: "Radiology", type: "wifi", severity: "medium" },
+      { id: "T006", department: "Laboratory", type: "printer", severity: "medium" },
+      { id: "T007", department: "ICU", type: "network", severity: "high" },
+      { id: "T008", department: "Emergency Department", type: "wifi", severity: "medium" },
+      { id: "T009", department: "Laboratory", type: "login", severity: "low" },
+      { id: "T010", department: "Radiology", type: "network", severity: "high" }
+    ];  
+      
 function analyzeTickets() {
+  const ticketCount = sampleTickets.length;
+
+  const departments = new Set(
+    sampleTickets.map(ticket => ticket.department)
+  );
+
+  const typeCounts = {};
+
+  sampleTickets.forEach(ticket => {
+    typeCounts[ticket.type] = (typeCounts[ticket.type] || 0) + 1;
+  });
+
+  const recurringPatterns = Object.values(typeCounts)
+    .filter(count => count >= 2)
+    .length;
+
   document.getElementById("results").style.display = "block";
+
+  document.getElementById("ticket-count").textContent = ticketCount;
+  document.getElementById("department-count").textContent = departments.size;
+  document.getElementById("pattern-count").textContent = recurringPatterns;
 }
 </script>
     </div>
