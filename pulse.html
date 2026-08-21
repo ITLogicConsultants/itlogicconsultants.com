@@ -212,6 +212,26 @@ function analyzeTickets() {
   
   document.getElementById("needs-attention").textContent = needsAttention;
 }
+
+function analyzeUploadedCsv() {
+  const fileInput = document.getElementById("ticket-file");
+  const file = fileInput.files[0];
+
+  if (!file) {
+    alert("Please select a CSV file first.");
+    return;
+  }
+
+  const reader = new FileReader();
+
+  reader.onload = function(event) {
+    const csvText = event.target.result;
+    console.log(csvText);
+    alert("CSV file loaded successfully.");
+  };
+
+  reader.readAsText(file);
+}      
 </script>
     </div>
 
