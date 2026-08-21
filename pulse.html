@@ -162,6 +162,17 @@ function analyzeTickets(tickets = sampleTickets) {
     .filter(count => count >= 2)
     .length;
 
+  const highPriorityTickets = tickets.filter(ticket => {
+    const severity = String(ticket.severity).toLowerCase();
+  
+    return (
+      severity === "high" ||
+      severity === "critical" ||
+      severity === "1" ||
+      severity === "2"
+    );
+  }).length;
+
   document.getElementById("results").style.display = "block";
 
   document.getElementById("ticket-count").textContent = ticketCount;
