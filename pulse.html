@@ -197,8 +197,9 @@ function analyzeTickets(tickets = sampleTickets) {
 
   if (networkRelated >= 3 && departments.size >= 2) {
     whyItMatters =
-      `Network-related issues account for ${networkRelated} of ${ticketCount} tickets across multiple departments. ` +
-      `This pattern may indicate a shared infrastructure issue rather than isolated user problems.`;
+      `Network-related issues account for ${networkRelated} of ${ticketCount} tickets across multiple departments, ` +
+      `including ${highPriorityTickets} high-priority tickets. ` +
+      `This combination of recurrence, cross-department impact, and priority may indicate a shared infrastructure issue requiring management attention.`;
   } else if (recurringPatterns > 0) {
     whyItMatters =
       `Repeated issue types were detected across the ticket activity and may warrant further investigation.`;
