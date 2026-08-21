@@ -215,10 +215,10 @@ function analyzeTickets(tickets = sampleTickets) {
   if (
     networkRelated >= 3 &&
     departments.size >= 2 &&
-    highPriorityCount >= 2
+    highPriorityTickets >= 2
   ) {
     needsAttention =
-      `Management attention is recommended. ${highPriorityCount} high-priority tickets are part of a recurring network-related pattern affecting ${departments.size} departments. ` +
+      `Management attention is recommended. ${highPriorityTickets} high-priority tickets are part of a recurring network-related pattern affecting ${departments.size} departments. ` +
       `Review shared network and Wi-Fi infrastructure, identify the highest-impact departments, and determine whether escalation or coordinated incident response is required.`;
   } else if (networkRelated >= 3 && departments.size >= 2) {
     needsAttention =
@@ -233,7 +233,8 @@ function analyzeTickets(tickets = sampleTickets) {
   }
 
   document.getElementById("needs-attention").textContent = needsAttention;
-
+  }
+      
 function analyzeUploadedCsv() {
   const fileInput = document.getElementById("ticket-file");
   const file = fileInput.files[0];
