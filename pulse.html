@@ -100,9 +100,8 @@
       </p>
     
       <h3>Why It Matters</h3>
-      <p>
-        Similar issues appearing across multiple departments may indicate
-        a shared infrastructure problem rather than isolated user incidents.
+      <p id="why-it-matters">
+        Analysis will appear here.
       </p>
     
       <h3>Needs Attention</h3>
@@ -155,9 +154,28 @@ function analyzeTickets() {
     .slice(0, 2)
     .map(([type, count]) => `${type} (${count})`)
     .join(" and ");
-  
+
   document.getElementById("what-happened").textContent =
     `The most frequent ticket patterns were ${topTypes}, affecting ${departments.size} departments.`;
+
+  const networkRelated =
+    (typeCounts["network"] || 0) + (typeCounts["wifi"] || 0);
+
+  let whyItMatters;
+
+  if (networkRelated >= 3 && departments.size >= 2) {
+    whyItMatters =
+      `Network-related issues account for ${networkRelated} of ${ticketCount} tickets across multiple departments. ` +
+      `This pattern may indicate a shared infrastructure issue rather than isolated user problems.`;
+  } else if (recurringPatterns > 0) {
+    whyItMatters =
+      `Repeated issue types were detected across the ticket activity and may warrant further investigation.`;
+  } else {
+    whyItMatters =
+      `No significant cross-department recurring pattern was detected in this ticket set.`;
+  }
+
+  document.getElementById("why-it-matters").textContent = whyItMatters;
 }
 </script>
     </div>
