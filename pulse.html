@@ -105,9 +105,8 @@
       </p>
     
       <h3>Needs Attention</h3>
-      <p>
-        Review the common network infrastructure serving the affected areas
-        before additional service disruption occurs.
+      <p id="needs-attention">
+        Analysis will appear here.
       </p>
     </div>
     
@@ -176,6 +175,22 @@ function analyzeTickets() {
   }
 
   document.getElementById("why-it-matters").textContent = whyItMatters;
+
+  let needsAttention;
+
+  if (networkRelated >= 3 && departments.size >= 2) {
+    needsAttention =
+      `Review shared network and Wi-Fi infrastructure across the affected departments. ` +
+      `Prioritize the areas generating the highest concentration of related tickets before the issue expands.`;
+  } else if (recurringPatterns > 0) {
+    needsAttention =
+      `Review the recurring issue categories and identify whether they share a common service, device, location, or support dependency.`;
+  } else {
+    needsAttention =
+      `No immediate cross-department escalation is indicated. Continue monitoring for emerging patterns.`;
+  }
+  
+  document.getElementById("needs-attention").textContent = needsAttention;
 }
 </script>
     </div>
