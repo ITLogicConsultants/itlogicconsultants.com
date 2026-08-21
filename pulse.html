@@ -325,6 +325,35 @@ function normalizeServiceNowTicket(ticket) {
       ticket.description ||
       ""
   };
+}  
+
+function normalizeJiraTicket(ticket) {
+  return {
+    id: ticket.key || ticket.id || "",
+    source: "jira",
+    department:
+      ticket.project ||
+      ticket.component ||
+      "Unknown",
+    type:
+      ticket.component ||
+      ticket.issue_type ||
+      "other",
+    severity:
+      ticket.priority ||
+      "unknown",
+    description:
+      ticket.summary ||
+      ticket.description ||
+      "",
+    status:
+      ticket.status ||
+      "unknown",
+    opened_at:
+      ticket.created ||
+      ticket.opened_at ||
+      ""
+  };
 }      
        
       
