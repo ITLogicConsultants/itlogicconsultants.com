@@ -113,6 +113,7 @@
       <p><strong>Tickets Analyzed:</strong> <span id="ticket-count">0</span></p>
       <p><strong>Departments Affected:</strong> <span id="department-count">0</span></p>
       <p><strong>Recurring Patterns:</strong> <span id="pattern-count">0</span></p>
+      <p><strong>High Priority Tickets:</strong> <span id="high-priority-count">0</span></p>
     
       <h3>What Happened</h3>
       <p id="what-happened">
@@ -178,6 +179,7 @@ function analyzeTickets(tickets = sampleTickets) {
   document.getElementById("ticket-count").textContent = ticketCount;
   document.getElementById("department-count").textContent = departments.size;
   document.getElementById("pattern-count").textContent = recurringPatterns;
+  document.getElementById("high-priority-count").textContent = highPriorityTickets;
 
   const topTypes = Object.entries(typeCounts)
     .sort((a, b) => b[1] - a[1])
