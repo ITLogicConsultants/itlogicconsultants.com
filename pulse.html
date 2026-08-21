@@ -114,6 +114,7 @@
       <p><strong>Departments Affected:</strong> <span id="department-count">0</span></p>
       <p><strong>Recurring Patterns:</strong> <span id="pattern-count">0</span></p>
       <p><strong>High Priority Tickets:</strong> <span id="high-priority-count">0</span></p>
+      <p><strong>Highest Activity Area:</strong> <span id="top-department">-</span></p>
     
       <h3>What Happened</h3>
       <p id="what-happened">
@@ -153,6 +154,24 @@ function analyzeTickets(tickets = sampleTickets) {
     tickets.map(ticket => ticket.department)
   );
 
+  const departmentCounts = {};
+
+  tickets.forEach(ticket => {
+    departmentCounts[ticket.department] =
+      (departmentCounts[ticket.department] || 0) + 1;
+  });
+  
+  const topDepartmentEntry = Object.entries(departmentCounts)
+    .sort((a, b) => b[1] - a[1])[0];
+  
+  const topDepartment = topDepartmentEntry
+    ? topDepartmentEntry[0]
+    : "Unknown";
+  
+  const topDepartmentCount = topDepartmentEntry
+    ? topDepartmentEntry[1]
+    : 0;
+
   const typeCounts = {};
 
   tickets.forEach(ticket => {
@@ -180,6 +199,8 @@ function analyzeTickets(tickets = sampleTickets) {
   document.getElementById("department-count").textContent = departments.size;
   document.getElementById("pattern-count").textContent = recurringPatterns;
   document.getElementById("high-priority-count").textContent = highPriorityTickets;
+  document.getElementById("top-department").textContent =
+  `${topDepartment} (${topDepartmentCount} tickets)`;
 
   const topTypes = Object.entries(typeCounts)
     .sort((a, b) => b[1] - a[1])
