@@ -255,7 +255,8 @@ function analyzeUploadedCsv() {
     alert(`Loaded ${uploadedTickets.length} tickets from CSV.`);
     console.log(uploadedTickets);
     
-    analyzeTickets(uploadedTickets);
+    const normalizedTickets = uploadedTickets.map(normalizeServiceNowTicket);
+    analyzeTickets(normalizedTickets);
   };
 
   reader.readAsText(file);
