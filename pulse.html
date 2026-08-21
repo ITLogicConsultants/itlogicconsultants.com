@@ -260,6 +260,30 @@ function analyzeUploadedCsv() {
 
   reader.readAsText(file);
 }
+
+function normalizeServiceNowTicket(ticket) {
+  return {
+    id: ticket.number || ticket.id || "",
+    department:
+      ticket.department ||
+      ticket.assignment_group ||
+      "Unknown",
+    type:
+      ticket.type ||
+      ticket.category ||
+      "other",
+    severity:
+      ticket.severity ||
+      ticket.priority ||
+      "unknown",
+    description:
+      ticket.short_description ||
+      ticket.description ||
+      ""
+  };
+}      
+       
+      
 </script>
     </div>
 
