@@ -255,6 +255,26 @@ function analyzeTickets(tickets = sampleTickets) {
 
   document.getElementById("needs-attention").textContent = needsAttention;
   }
+
+function detectSource(headers) {
+  const normalizedHeaders = headers.map(header => header.toLowerCase());
+
+  if (
+    normalizedHeaders.includes("number") &&
+    normalizedHeaders.includes("short_description")
+  ) {
+    return "servicenow";
+  }
+
+  if (
+    normalizedHeaders.includes("key") &&
+    normalizedHeaders.includes("summary")
+  ) {
+    return "jira";
+  }
+
+  return "unknown";
+}      
       
 function analyzeUploadedCsv() {
   const fileInput = document.getElementById("ticket-file");
