@@ -95,9 +95,8 @@
       <p><strong>Recurring Patterns:</strong> <span id="pattern-count">0</span></p>
     
       <h3>What Happened</h3>
-      <p>
-        Network and Wi-Fi related incidents increased during the week,
-        affecting multiple operational areas.
+      <p id="what-happened">
+        Analysis will appear here.
       </p>
     
       <h3>Why It Matters</h3>
@@ -150,6 +149,15 @@ function analyzeTickets() {
   document.getElementById("ticket-count").textContent = ticketCount;
   document.getElementById("department-count").textContent = departments.size;
   document.getElementById("pattern-count").textContent = recurringPatterns;
+
+  const topTypes = Object.entries(typeCounts)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 2)
+    .map(([type, count]) => `${type} (${count})`)
+    .join(" and ");
+  
+  document.getElementById("what-happened").textContent =
+    `The most frequent ticket patterns were ${topTypes}, affecting ${departments.size} departments.`;
 }
 </script>
     </div>
