@@ -298,6 +298,8 @@ function analyzeUploadedCsv() {
       .split(",")
       .map(header => header.trim());
 
+    const source = detectSource(headers);
+
     const uploadedTickets = lines
       .slice(1)
       .filter(line => line.trim() !== "")
@@ -318,7 +320,17 @@ function analyzeUploadedCsv() {
     alert(`Loaded ${uploadedTickets.length} tickets from CSV.`);
     console.log(uploadedTickets);
     
-    const normalizedTickets = uploadedTickets.map(normalizeServiceNowTicket);
+    let normalizedTickets;
+
+    if (source === "servicenow") {
+      normalizedTickets = uploadedTickets.map(normalizeServiceNowTicket);
+    } else if (source === "jira") {
+      normalizedTickets = uploadedTickets.map(normalizeJiraTicket);
+    } else {
+      alert("Unsupported CSV format. Please upload a ServiceNow or Jira-style export.");
+      return;
+    }
+    
     analyzeTickets(normalizedTickets);
   };
 
