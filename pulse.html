@@ -145,16 +145,16 @@
       { id: "T010", department: "Radiology", type: "network", severity: "high" }
     ];  
       
-function analyzeTickets() {
-  const ticketCount = sampleTickets.length;
+function analyzeTickets(tickets = sampleTickets) {
+  const ticketCount = tickets.length;
 
   const departments = new Set(
-    sampleTickets.map(ticket => ticket.department)
+    tickets.map(ticket => ticket.department)
   );
 
   const typeCounts = {};
 
-  sampleTickets.forEach(ticket => {
+  tickets.forEach(ticket => {
     typeCounts[ticket.type] = (typeCounts[ticket.type] || 0) + 1;
   });
 
@@ -254,6 +254,8 @@ function analyzeUploadedCsv() {
 
     alert(`Loaded ${uploadedTickets.length} tickets from CSV.`);
     console.log(uploadedTickets);
+    
+    analyzeTickets(uploadedTickets);
   };
 
   reader.readAsText(file);
