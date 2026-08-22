@@ -163,8 +163,14 @@ function analyzeTickets(tickets = sampleTickets) {
   const departmentCounts = {};
 
   tickets.forEach(ticket => {
-    departmentCounts[ticket.department] =
-      (departmentCounts[ticket.department] || 0) + 1;
+    const normalizedType = String(ticket.type || "other")
+      .trim()
+      .toLowerCase();
+  
+    typeCounts[normalizedType] =
+      (typeCounts[normalizedType] || 0) + 1;
+  
+    ticket.type = normalizedType;
   });
   
   const topDepartmentEntry = Object.entries(departmentCounts)
