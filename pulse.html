@@ -365,8 +365,8 @@ function normalizeJiraTicket(ticket) {
     id: ticket.key || ticket.id || "",
     source: "jira",
     department:
-      ticket.project ||
       ticket.component ||
+      ticket.project ||
       "Unknown",
     type:
       ticket.component ||
