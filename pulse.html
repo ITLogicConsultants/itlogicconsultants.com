@@ -240,6 +240,34 @@ function analyzeTickets(tickets = sampleTickets) {
   const networkRelated =
     (typeCounts["network"] || 0) + (typeCounts["wifi"] || 0);
 
+  const networkSources = new Set(
+    tickets
+      .filter(ticket => {
+        const type = String(ticket.type || "").toLowerCase();
+  
+        return type === "network" || type === "wifi";
+      })
+      .map(ticket => ticket.source)
+      .filter(source => source)
+  );
+  
+  let crossSystemSignal;
+  
+  if (networkRelated >= 2 && networkSources.size >= 2) {
+    crossSystemSignal =
+      `Related network and Wi-Fi issues were detected across ${networkSources.size} source systems. ` +
+      `The same operational pattern appearing in multiple ticketing systems may indicate a shared underlying infrastructure issue rather than isolated support tickets.`;
+  } else if (sources.size >= 2) {
+    crossSystemSignal =
+      `Ticket activity from ${sources.size} source systems was analyzed, but no strong common operational pattern was detected across them.`;
+  } else {
+    crossSystemSignal =
+      `Only one source system is represented in this analysis. Cross-system correlation requires ticket data from multiple systems.`;
+  }
+  
+  document.getElementById("cross-system-signal").textContent =
+    crossSystemSignal;
+
   const networkHighPriorityTickets = tickets.filter(ticket => {
     const type = String(ticket.type).toLowerCase();
     const severity = String(ticket.severity).toLowerCase();
