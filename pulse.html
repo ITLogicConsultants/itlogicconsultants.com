@@ -222,6 +222,24 @@ function analyzeTickets(tickets = sampleTickets) {
   const networkRelated =
     (typeCounts["network"] || 0) + (typeCounts["wifi"] || 0);
 
+  const networkHighPriorityTickets = tickets.filter(ticket => {
+    const type = String(ticket.type).toLowerCase();
+    const severity = String(ticket.severity).toLowerCase();
+  
+    const isNetworkRelated =
+      type === "network" ||
+      type === "wifi";
+  
+    const isHighPriority =
+      severity === "highest" ||
+      severity === "high" ||
+      severity === "critical" ||
+      severity === "1" ||
+      severity === "2";
+  
+    return isNetworkRelated && isHighPriority;
+  }).length;
+
   let whyItMatters;
 
   if (networkRelated >= 3 && departments.size >= 2) {
