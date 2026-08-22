@@ -288,17 +288,31 @@ function analyzeTickets(tickets = sampleTickets) {
 
   let whyItMatters;
 
-  if (networkRelated >= 3 && departments.size >= 2) {
+  if (
+    networkRelated >= 3 &&
+    networkSources.size >= 2 &&
+    departments.size >= 2
+  ) {
     whyItMatters =
-      `Network-related issues account for ${networkRelated} of ${ticketCount} tickets across multiple departments, ` +
+      `Network-related issues account for ${networkRelated} of ${ticketCount} tickets across multiple departments and ${networkSources.size} source systems, ` +
       `including ${networkHighPriorityTickets} high-priority network-related tickets. ` +
-      `This combination of recurrence, cross-department impact, and priority may indicate a shared infrastructure issue requiring management attention.`;
+      `The recurrence across separate ticketing systems strengthens the possibility of a shared infrastructure issue requiring management attention.`;
+  
+  } else if (
+    networkRelated >= 3 &&
+    departments.size >= 2
+  ) {
+    whyItMatters =
+      `A recurring network-related pattern was detected within the ticket activity, affecting multiple departments. ` +
+      `However, the pattern was not detected across multiple source systems, so it should currently be treated as a single-system operational signal rather than a cross-system correlation.`;
+  
   } else if (recurringPatterns > 0) {
     whyItMatters =
       `Repeated issue types were detected across the ticket activity and may warrant further investigation.`;
+  
   } else {
     whyItMatters =
-      `No significant cross-department recurring pattern was detected in this ticket set.`;
+      `No significant recurring operational pattern was detected in this ticket set.`;
   }
 
   document.getElementById("why-it-matters").textContent = whyItMatters;
