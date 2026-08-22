@@ -111,6 +111,7 @@
       <h2>Weekly Operational Intelligence</h2>
     
       <p><strong>Tickets Analyzed:</strong> <span id="ticket-count">0</span></p>
+      <p><strong>Source Systems:</strong> <span id="source-count">0</span></p>
       <p><strong>Departments Affected:</strong> <span id="department-count">0</span></p>
       <p><strong>Recurring Patterns:</strong> <span id="pattern-count">0</span></p>
       <p><strong>High Priority Tickets:</strong> <span id="high-priority-count">0</span></p>
@@ -201,6 +202,7 @@ function analyzeTickets(tickets = sampleTickets) {
   document.getElementById("results").style.display = "block";
 
   document.getElementById("ticket-count").textContent = ticketCount;
+  document.getElementById("source-count").textContent = sources.size;
   document.getElementById("department-count").textContent = departments.size;
   document.getElementById("pattern-count").textContent = recurringPatterns;
   document.getElementById("high-priority-count").textContent = highPriorityTickets;
