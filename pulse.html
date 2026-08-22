@@ -2,9 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />`${topDepartments.join(", ")} (${maxDepartmentCount} ${
-  topDepartments.length > 1 ? "tickets each" : "tickets"
-})`
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>HI2P Pulse Demo | ITLOGIC Consultants LLC</title>
 
   <style>
@@ -187,9 +185,10 @@ function analyzeTickets(tickets = sampleTickets) {
     .sort();
   
   const topDepartmentText = topDepartments.length > 0
-    ? `${topDepartments.join(", ")} (${topDepartmentCount} tickets each)`
+    ? `${topDepartments.join(", ")} (${topDepartmentCount} ${
+        topDepartments.length > 1 ? "tickets each" : "tickets"
+      })`
     : "Unknown";
-
   const typeCounts = {};
 
   tickets.forEach(ticket => {
