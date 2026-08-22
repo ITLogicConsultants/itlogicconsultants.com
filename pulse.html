@@ -262,10 +262,10 @@ function analyzeTickets(tickets = sampleTickets) {
   if (
     networkRelated >= 3 &&
     departments.size >= 2 &&
-    highPriorityTickets >= 2
+    networkHighPriorityTickets >= 2
   ) {
     needsAttention =
-      `Management attention is recommended. ${highPriorityTickets} high-priority tickets are part of a recurring network-related pattern affecting ${departments.size} departments. ` +
+      `Management attention is recommended. ${networkHighPriorityTickets} high-priority network-related tickets are part of a recurring pattern affecting ${departments.size} departments. ` +
       `Review shared network and Wi-Fi infrastructure, identify the highest-impact departments, and determine whether escalation or coordinated incident response is required.`;
   } else if (networkRelated >= 3 && departments.size >= 2) {
     needsAttention =
