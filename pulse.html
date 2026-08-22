@@ -186,6 +186,7 @@ function analyzeTickets(tickets = sampleTickets) {
     const severity = String(ticket.severity).toLowerCase();
   
     return (
+      severity === "highest" ||
       severity === "high" ||
       severity === "critical" ||
       severity === "1" ||
