@@ -167,16 +167,20 @@ function analyzeTickets(tickets = sampleTickets) {
       (departmentCounts[ticket.department] || 0) + 1;
   });
   
-  const topDepartmentEntry = Object.entries(departmentCounts)
-    .sort((a, b) => b[1] - a[1])[0];
-  
-  const topDepartment = topDepartmentEntry
-    ? topDepartmentEntry[0]
-    : "Unknown";
-  
-  const topDepartmentCount = topDepartmentEntry
-    ? topDepartmentEntry[1]
+  const departmentEntries = Object.entries(departmentCounts);
+
+  const topDepartmentCount = departmentEntries.length > 0
+    ? Math.max(...departmentEntries.map(([, count]) => count))
     : 0;
+  
+  const topDepartments = departmentEntries
+    .filter(([, count]) => count === topDepartmentCount)
+    .map(([department]) => department)
+    .sort();
+  
+  const topDepartmentText = topDepartments.length > 0
+    ? `${topDepartments.join(", ")} (${topDepartmentCount} tickets each)`
+    : "Unknown";
 
   const typeCounts = {};
 
@@ -216,7 +220,7 @@ function analyzeTickets(tickets = sampleTickets) {
   document.getElementById("pattern-count").textContent = recurringPatterns;
   document.getElementById("high-priority-count").textContent = highPriorityTickets;
   document.getElementById("top-department").textContent =
-  `${topDepartment} (${topDepartmentCount} tickets)`;
+    topDepartmentText;
 
   const topTypes = Object.entries(typeCounts)
     .sort((a, b) => b[1] - a[1])
