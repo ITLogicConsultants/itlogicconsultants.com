@@ -293,56 +293,63 @@ function analyzeUploadedCsv() {
     return;
   }
 
-  const reader = new FileReader();
-
-  reader.onload = function(event) {
-    const csvText = event.target.result;
-
-    const lines = csvText
-      .trim()
-      .split(/\r?\n/);
-
-    const headers = lines[0]
-      .split(",")
-      .map(header => header.trim());
-
-    const source = detectSource(headers);
-
-    const uploadedTickets = lines
-      .slice(1)
-      .filter(line => line.trim() !== "")
-      .map(line => {
-        const values = line
-          .split(",")
-          .map(value => value.trim());
-
-        const ticket = {};
-
-        headers.forEach((header, index) => {
-          ticket[header] = values[index];
+  const allNormalizedTickets = [];
+  let filesProcessed = 0;
+  
+  files.forEach(file => {
+    const reader = new FileReader();
+  
+    reader.onload = function(event) {
+      const csvText = event.target.result;
+  
+      const lines = csvText
+        .trim()
+        .split(/\r?\n/);
+  
+      const headers = lines[0]
+        .split(",")
+        .map(header => header.trim());
+  
+      const source = detectSource(headers);
+  
+      const uploadedTickets = lines
+        .slice(1)
+        .filter(line => line.trim() !== "")
+        .map(line => {
+          const values = line
+            .split(",")
+            .map(value => value.trim());
+  
+          const ticket = {};
+  
+          headers.forEach((header, index) => {
+            ticket[header] = values[index];
+          });
+  
+          return ticket;
         });
-
-        return ticket;
-      });
-
-    alert(`Loaded ${uploadedTickets.length} tickets from CSV.`);
-    console.log(uploadedTickets);
-    
-    let normalizedTickets;
-
-    if (source === "servicenow") {
-      normalizedTickets = uploadedTickets.map(normalizeServiceNowTicket);
-    } else if (source === "jira") {
-      normalizedTickets = uploadedTickets.map(normalizeJiraTicket);
-    } else {
-      alert("Unsupported CSV format. Please upload a ServiceNow or Jira-style export.");
-      return;
-    }
-    
-    analyzeTickets(normalizedTickets);
-  };
-
-  reader.readAsText(file);
+  
+      let normalizedTickets;
+  
+      if (source === "servicenow") {
+        normalizedTickets = uploadedTickets.map(normalizeServiceNowTicket);
+      } else if (source === "jira") {
+        normalizedTickets = uploadedTickets.map(normalizeJiraTicket);
+      } else {
+        alert(`Unsupported CSV format: ${file.name}`);
+        return;
+      }
+  
+      allNormalizedTickets.push(...normalizedTickets);
+      filesProcessed++;
+  
+      if (filesProcessed === files.length) {
+        analyzeTickets(allNormalizedTickets);
+      }
+    };
+  
+    reader.readAsText(file);
+  });
 }
 
 function normalizeServiceNowTicket(ticket) {
