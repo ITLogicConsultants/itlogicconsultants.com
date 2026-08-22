@@ -470,9 +470,9 @@ function normalizeJiraTicket(ticket) {
     id: ticket.key || ticket.id || "",
     source: "jira",
     department:
-      ticket.component ||
-      ticket.project ||
-      "Unknown",
+    ticket.department ||
+    ticket.project ||
+    "Unknown",
     type:
       ticket.component ||
       ticket.issue_type ||
