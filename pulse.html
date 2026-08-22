@@ -187,12 +187,20 @@ function analyzeTickets(tickets = sampleTickets) {
   const typeCounts = {};
 
   tickets.forEach(ticket => {
-    typeCounts[ticket.type] = (typeCounts[ticket.type] || 0) + 1;
+    const normalizedType = String(ticket.type || "other")
+      .trim()
+      .toLowerCase();
+  
+    ticket.type = normalizedType;
+  
+    typeCounts[normalizedType] =
+      (typeCounts[normalizedType] || 0) + 1;
   });
-
+  
   const recurringPatterns = Object.values(typeCounts)
     .filter(count => count >= 2)
     .length;
+    
 
   const highPriorityTickets = tickets.filter(ticket => {
     const severity = String(ticket.severity).toLowerCase();
