@@ -286,9 +286,9 @@ function detectSource(headers) {
       
 function analyzeUploadedCsv() {
   const fileInput = document.getElementById("ticket-file");
-  const file = fileInput.files[0];
+  const files = Array.from(fileInput.files);
 
-  if (!file) {
+  if (files.length === 0) {
     alert("Please select a CSV file first.");
     return;
   }
