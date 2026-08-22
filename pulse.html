@@ -150,6 +150,10 @@
 function analyzeTickets(tickets = sampleTickets) {
   const ticketCount = tickets.length;
 
+  const sources = new Set(
+    tickets.map(ticket => ticket.source || "sample")
+  );
+
   const departments = new Set(
     tickets.map(ticket => ticket.department)
   );
