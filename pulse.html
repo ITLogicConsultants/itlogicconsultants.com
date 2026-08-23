@@ -319,11 +319,7 @@ function analyzeTickets(tickets = sampleTickets) {
     departments.size >= 2
   ) {
 
-  if (
-    networkRelated >= 3 &&
-    networkSources.size >= 2 &&
-    departments.size >= 2
-  ) {
+  
     whyItMatters =
       `Network-related issues account for ${networkRelated} of ${ticketCount} tickets across multiple departments and ${networkSources.size} source systems, ` +
       `including ${networkHighPriorityTickets} high-priority network-related tickets. ` +
@@ -362,12 +358,7 @@ function analyzeTickets(tickets = sampleTickets) {
   ) {  
 
     
-  if (
-    networkRelated >= 3 &&
-    networkSources.size >= 2 &&
-    departments.size >= 2 &&
-    networkHighPriorityTickets >= 2
-  ) {
+  
     needsAttention =
       `Management attention is recommended. ${networkHighPriorityTickets} high-priority network-related tickets are part of a recurring pattern detected across ${networkSources.size} source systems. ` +
       `Review shared network and Wi-Fi infrastructure and determine whether coordinated incident response is required.`;
