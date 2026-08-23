@@ -590,6 +590,22 @@ function analyzeTickets(tickets = sampleTickets) {
   document.getElementById("management-message").textContent =
     managementMessage;
 
+  const topSignalEntry = Object.entries(typeCounts)
+    .sort((a, b) => b[1] - a[1])[0];
+  
+  const topSignalText = topSignalEntry
+    ? `${topSignalEntry[0]} (${topSignalEntry[1]})`
+    : "None";
+  
+  document.getElementById("signal-top-pattern").textContent =
+    topSignalText;
+  
+  document.getElementById("signal-network-count").textContent =
+    networkRelated;
+  
+  document.getElementById("signal-network-high").textContent =
+    networkHighPriorityTickets;
+    
   document.getElementById("needs-attention").textContent = needsAttention;
   }
 
