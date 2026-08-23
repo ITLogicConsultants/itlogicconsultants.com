@@ -95,7 +95,36 @@
       }
     }
     
-        
+    .management-summary {
+      margin-top: 24px;
+      margin-bottom: 24px;
+      padding: 20px;
+      background: #14223d;
+      border: 1px solid #35527d;
+      border-left: 5px solid #5b8cff;
+      border-radius: 10px;
+    }
+    
+    .management-summary-label {
+      color: #8eb9ff;
+      font-size: 14px;
+      margin-bottom: 7px;
+    }
+    
+    .operational-risk {
+      font-size: 21px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    
+    #management-message {
+      line-height: 1.5;
+    }
+
+</style>
+
+
+</style>    
   </style>
 </head>
 
@@ -182,6 +211,16 @@
         </div>
       
       </div>
+
+      <div id="management-summary" class="management-summary">
+        <div class="management-summary-label">Management Summary</div>
+        <div id="operational-risk" class="operational-risk">
+            Operational Risk: —
+        </div>
+        <div id="management-message">
+            Analyze ticket activity to generate the management assessment.
+        </div>
+    </div>
     
       <h3>Cross-System Signal</h3>
       <p id="cross-system-signal">
