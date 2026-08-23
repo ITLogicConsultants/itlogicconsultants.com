@@ -58,6 +58,44 @@
     .button:hover {
       background: #0f5fcc;
     }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin: 25px 0 30px;
+    }
+    
+    .metric-card {
+      background: #102b4e;
+      border: 1px solid #24517d;
+      border-radius: 12px;
+      padding: 20px;
+    }
+    
+    .metric-label {
+      color: #9fb8cf;
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+    
+    .metric-value {
+      color: #ffffff;
+      font-size: 30px;
+      font-weight: bold;
+    }
+    
+    .metric-text {
+      font-size: 20px;
+    }
+    
+    @media (max-width: 750px) {
+      .metric-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+        
   </style>
 </head>
 
@@ -111,12 +149,39 @@
     <div id="results" style="display:none;" class="panel">
       <h2>Weekly Operational Intelligence</h2>
     
-      <p><strong>Tickets Analyzed:</strong> <span id="ticket-count">0</span></p>
-      <p><strong>Source Systems:</strong> <span id="source-count">0</span></p>
-      <p><strong>Departments Affected:</strong> <span id="department-count">0</span></p>
-      <p><strong>Recurring Patterns:</strong> <span id="pattern-count">0</span></p>
-      <p><strong>High Priority Tickets:</strong> <span id="high-priority-count">0</span></p>
-      <p><strong>Highest Activity Area:</strong> <span id="top-department">-</span></p>
+      <div class="metric-grid">
+
+        <div class="metric-card">
+          <div class="metric-label">Tickets Analyzed</div>
+          <div class="metric-value" id="ticket-count">0</div>
+        </div>
+      
+        <div class="metric-card">
+          <div class="metric-label">Source Systems</div>
+          <div class="metric-value" id="source-count">0</div>
+        </div>
+      
+        <div class="metric-card">
+          <div class="metric-label">Departments Affected</div>
+          <div class="metric-value" id="department-count">0</div>
+        </div>
+      
+        <div class="metric-card">
+          <div class="metric-label">Recurring Patterns</div>
+          <div class="metric-value" id="pattern-count">0</div>
+        </div>
+      
+        <div class="metric-card">
+          <div class="metric-label">High Priority Tickets</div>
+          <div class="metric-value" id="high-priority-count">0</div>
+        </div>
+      
+        <div class="metric-card">
+          <div class="metric-label">Highest Activity Area</div>
+          <div class="metric-value metric-text" id="top-department">-</div>
+        </div>
+      
+      </div>
     
       <h3>Cross-System Signal</h3>
       <p id="cross-system-signal">
