@@ -742,7 +742,10 @@ function analyzeTickets(tickets = sampleTickets) {
   
   document.getElementById("key-management-insight").textContent =
     keyManagementInsight;
-    
+  
+  document.getElementById("weekly-change-text").textContent =
+    "A previous-week dataset is required to calculate week-over-week changes in ticket volume, recurring patterns, priority, affected departments, and operational risk.";
+  
   document.getElementById("needs-attention").textContent = needsAttention;
   }
 
