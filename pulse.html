@@ -287,17 +287,11 @@ function analyzeTickets(tickets = sampleTickets) {
     return isNetworkRelated && isHighPriority;
   }).length;
 
-  const criticalOperationalTickets = tickets.filter(ticket => {
-    const type = String(ticket.type || "").toLowerCase();
-    const severity = String(ticket.severity || "").toLowerCase();
+    const criticalOperationalTickets = tickets.filter(ticket => {
+      const type = String(ticket.type || "").toLowerCase();
   
-    return (
-      type === "system_down" ||
-      severity === "critical" ||
-      severity === "highest" ||
-      severity === "1"
-    );
-  });
+      return type === "system_down";
+    });
   
   const criticalOperationalCount = criticalOperationalTickets.length;
   
