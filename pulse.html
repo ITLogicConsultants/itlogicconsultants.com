@@ -287,7 +287,37 @@ function analyzeTickets(tickets = sampleTickets) {
     return isNetworkRelated && isHighPriority;
   }).length;
 
+  const criticalOperationalTickets = tickets.filter(ticket => {
+    const type = String(ticket.type || "").toLowerCase();
+    const severity = String(ticket.severity || "").toLowerCase();
+  
+    return (
+      type === "system_down" ||
+      severity === "critical" ||
+      severity === "highest" ||
+      severity === "1"
+    );
+  });
+  
+  const criticalOperationalCount = criticalOperationalTickets.length;
+  
+  const criticalOperationalTicket =
+    criticalOperationalCount > 0
+      ? criticalOperationalTickets[0]
+      : null;
+
   let whyItMatters;
+
+  if (criticalOperationalCount > 0) {
+    whyItMatters =
+      `A critical operational event was detected in ${criticalOperationalTicket.department}. ` +
+      `The ${criticalOperationalTicket.type} ticket requires attention based on its priority and operational impact, even though the issue is not recurring.`;
+  
+  } else if (
+    networkRelated >= 3 &&
+    networkSources.size >= 2 &&
+    departments.size >= 2
+  ) {
 
   if (
     networkRelated >= 3 &&
@@ -319,7 +349,19 @@ function analyzeTickets(tickets = sampleTickets) {
   document.getElementById("why-it-matters").textContent = whyItMatters;
 
   let needsAttention;
+  if (criticalOperationalCount > 0) {
+    needsAttention =
+      `Immediate management attention is recommended for the ${criticalOperationalTicket.department} ${criticalOperationalTicket.type} event. ` +
+      `Review service impact immediately and determine whether incident escalation or coordinated response is required.`;
+  
+  } else if (
+    networkRelated >= 3 &&
+    networkSources.size >= 2 &&
+    departments.size >= 2 &&
+    networkHighPriorityTickets >= 2
+  ) {  
 
+    
   if (
     networkRelated >= 3 &&
     networkSources.size >= 2 &&
