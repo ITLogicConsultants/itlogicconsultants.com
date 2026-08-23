@@ -596,10 +596,13 @@ function analyzeTickets(tickets = sampleTickets) {
   const highestSignalCount =
     topSignalEntries.length > 0 ? topSignalEntries[0][1] : 0;
   
-  const topSignalText = topSignalEntries
-    .filter(([, count]) => count === highestSignalCount)
-    .map(([type, count]) => `${type} (${count})`)
-    .join(", ");
+  const topSignalText =
+    highestSignalCount <= 1
+      ? "No dominant issue pattern"
+      : topSignalEntries
+          .filter(([, count]) => count === highestSignalCount)
+          .map(([type, count]) => `${type} (${count})`)
+          .join(", ");
   
   document.getElementById("signal-top-pattern").textContent =
     topSignalText || "None";
