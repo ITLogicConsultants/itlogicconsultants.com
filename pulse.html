@@ -642,7 +642,27 @@ function analyzeTickets(tickets = sampleTickets) {
   document.getElementById("signal-network-high").textContent =
     networkHighPriorityTickets;
 
+  let recommendedActions;
+
+  if (operationalRisk === "CRITICAL") {
+    recommendedActions =
+      "Immediately validate service impact, engage the responsible technical team, and initiate incident escalation and coordinated response.";
+  }
+  else if (operationalRisk === "HIGH") {
+    recommendedActions =
+      "Review the recurring pattern across source systems, identify shared infrastructure dependencies, and assign investigation ownership.";
+  }
+  else if (operationalRisk === "ELEVATED") {
+    recommendedActions =
+      "Investigate the recurring pattern across affected departments, review the high-priority tickets, and determine whether proactive intervention is required.";
+  }
+  else {
+    recommendedActions =
+      "Continue monitoring ticket activity for emerging recurring patterns or increases in operational risk.";
+  }
   
+  document.getElementById("recommended-actions-text").textContent =
+    recommendedActions;
     
   document.getElementById("needs-attention").textContent = needsAttention;
   }
