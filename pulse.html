@@ -687,6 +687,32 @@ function analyzeTickets(tickets = sampleTickets) {
   
   document.getElementById("recommended-actions-text").textContent =
     recommendedActions;
+
+  let keyManagementInsight;
+
+  if (operationalRisk === "CRITICAL") {
+    keyManagementInsight =
+      "A critical operational event requires immediate management visibility even if it is not part of a recurring pattern.";
+  }
+  else if (operationalRisk === "HIGH") {
+    keyManagementInsight =
+      "The same operational pattern is appearing across multiple ticketing systems, increasing the likelihood of a shared infrastructure dependency rather than isolated support issues.";
+  }
+  else if (operationalRisk === "ELEVATED") {
+    keyManagementInsight =
+      "Recurring high-priority activity across multiple departments suggests a broader infrastructure concern that may require proactive intervention before service impact increases.";
+  }
+  else if (operationalRisk === "MODERATE") {
+    keyManagementInsight =
+      "Recurring ticket patterns are present, but current evidence does not indicate significant operational impact. Management should watch for increasing frequency or broader departmental impact.";
+  }
+  else {
+    keyManagementInsight =
+      "Current ticket activity does not indicate a significant operational pattern requiring management intervention.";
+  }
+  
+  document.getElementById("key-management-insight").textContent =
+    keyManagementInsight;
     
   document.getElementById("needs-attention").textContent = needsAttention;
   }
