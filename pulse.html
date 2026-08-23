@@ -483,6 +483,44 @@ function analyzeTickets(tickets = sampleTickets) {
       `No immediate escalation is indicated. Continue monitoring for emerging operational patterns.`;
   }
 
+  let operationalRisk;
+  let managementMessage;
+
+  if (criticalOperationalCount > 0) {
+    operationalRisk = "CRITICAL";
+    managementMessage =
+      `Immediate management attention required. ${criticalOperationalCount} critical operational event(s) detected.`;
+  } else if (
+    networkRelated >= 3 &&
+    networkSources.size >= 2 &&
+    networkHighPriorityTickets >= 2
+  ) {
+    operationalRisk = "HIGH";
+    managementMessage =
+      `A significant recurring infrastructure pattern is present across ${networkSources.size} source systems and requires management review.`;
+  } else if (
+    networkRelated >= 3 &&
+    networkHighPriorityTickets >= 2
+  ) {
+    operationalRisk = "ELEVATED";
+    managementMessage =
+      `A significant recurring infrastructure pattern is affecting multiple departments and should be investigated.`;
+  } else if (recurringPatterns > 0) {
+    operationalRisk = "MODERATE";
+    managementMessage =
+      `Recurring operational patterns were detected and should be reviewed for common dependencies.`;
+  } else {
+    operationalRisk = "LOW";
+    managementMessage =
+      `No significant recurring operational risk was detected in the analyzed ticket activity.`;
+  }
+  
+  document.getElementById("operational-risk").textContent =
+    `Operational Risk: ${operationalRisk}`;
+  
+  document.getElementById("management-message").textContent =
+    managementMessage;
+
   document.getElementById("needs-attention").textContent = needsAttention;
   }
 
