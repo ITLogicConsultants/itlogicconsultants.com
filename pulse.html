@@ -856,6 +856,97 @@ async function analyzeUploadedCsv() {
     return allTickets;
   }
 
+  function summarizeWeek(tickets) {
+    const typeCounts = {};
+  
+    tickets.forEach(ticket => {
+      const type = String(ticket.type || "other")
+        .trim()
+        .toLowerCase();
+  
+      typeCounts[type] = (typeCounts[type] || 0) + 1;
+    });
+  
+    const departments =
+      new Set(tickets.map(ticket => ticket.department)).size;
+  
+    const recurringPatterns =
+      Object.values(typeCounts).filter(count => count >= 2).length;
+  
+    const highPriorityTickets = tickets.filter(ticket => {
+      const severity = String(ticket.severity || "").toLowerCase();
+  
+      return (
+        severity === "highest" ||
+        severity === "high" ||
+        severity === "critical" ||
+        severity === "1" ||
+        severity === "2"
+      );
+    }).length;
+  
+    const networkRelated =
+      (typeCounts["network"] || 0) +
+      (typeCounts["wifi"] || 0);
+  
+    const networkHighPriorityTickets = tickets.filter(ticket => {
+      const type = String(ticket.type || "").toLowerCase();
+      const severity = String(ticket.severity || "").toLowerCase();
+  
+      const network =
+        type === "network" || type === "wifi";
+  
+      const high =
+        severity === "highest" ||
+        severity === "high" ||
+        severity === "critical" ||
+        severity === "1" ||
+        severity === "2";
+  
+      return network && high;
+    }).length;
+  
+    const criticalCount =
+      typeCounts["system_down"] || 0;
+  
+    let operationalRisk;
+  
+    if (criticalCount > 0) {
+      operationalRisk = "CRITICAL";
+    }
+    else if (networkRelated >= 3 && networkHighPriorityTickets >= 2) {
+      operationalRisk = "ELEVATED";
+    }
+    else if (recurringPatterns > 0) {
+      operationalRisk = "MODERATE";
+    }
+    else {
+      operationalRisk = "LOW";
+    }
+  
+    const sortedTypes = Object.entries(typeCounts)
+      .sort((a, b) => b[1] - a[1]);
+  
+    const highestCount =
+      sortedTypes.length ? sortedTypes[0][1] : 0;
+  
+    const topPattern = sortedTypes
+      .filter(([, count]) => count === highestCount)
+      .map(([type]) => type)
+      .join(" / ");
+  
+    return {
+      ticketCount: tickets.length,
+      departments,
+      recurringPatterns,
+      highPriorityTickets,
+      networkRelated,
+      networkHighPriorityTickets,
+      operationalRisk,
+      topPattern
+    };
+  }
+
   try {
     const currentTickets = await readFiles(currentFiles);
     const previousTickets = await readFiles(previousFiles);
@@ -864,8 +955,56 @@ async function analyzeUploadedCsv() {
 
     window.previousWeekTickets = previousTickets;
 
+    const current = summarizeWeek(currentTickets);
+    const previous = summarizeWeek(previousTickets);
+    
+    const ticketDifference =
+      current.ticketCount - previous.ticketCount;
+    
+    const ticketPercent =
+      previous.ticketCount > 0
+        ? Math.round(
+            (ticketDifference / previous.ticketCount) * 100
+          )
+        : 0;
+    
+    const volumeDirection =
+      ticketDifference > 0
+        ? "increased"
+        : ticketDifference < 0
+          ? "decreased"
+          : "remained unchanged";
+    
+    let weeklyChange =
+      `Ticket volume ${volumeDirection} from ${previous.ticketCount} to ${current.ticketCount}`;
+    
+    if (ticketDifference !== 0 && previous.ticketCount > 0) {
+      weeklyChange +=
+        ` (${ticketPercent > 0 ? "+" : ""}${ticketPercent}%).`;
+    }
+    else {
+      weeklyChange += ".";
+    }
+    
+    weeklyChange +=
+      ` Network/Wi-Fi activity changed from ${previous.networkRelated} to ${current.networkRelated} tickets.`;
+    
+    weeklyChange +=
+      ` High-priority tickets changed from ${previous.highPriorityTickets} to ${current.highPriorityTickets}.`;
+    
+    weeklyChange +=
+      ` Recurring patterns changed from ${previous.recurringPatterns} to ${current.recurringPatterns}.`;
+    
+    if (previous.topPattern !== current.topPattern) {
+      weeklyChange +=
+        ` The dominant issue pattern shifted from ${previous.topPattern} to ${current.topPattern}.`;
+    }
+    
+    weeklyChange +=
+      ` Operational risk changed from ${previous.operationalRisk} to ${current.operationalRisk}.`;
+    
     document.getElementById("weekly-change-text").textContent =
-      `Previous week loaded successfully: ${previousTickets.length} tickets. Ready for week-over-week comparison.`;
+      weeklyChange;
 
   } catch (error) {
     alert(error.message);
