@@ -785,34 +785,39 @@ function detectSource(headers) {
   return "unknown";
 }      
       
-function analyzeUploadedCsv() {
-  const fileInput = document.getElementById("ticket-file");
-  const files = Array.from(fileInput.files);
+async function analyzeUploadedCsv() {
+  const currentInput = document.getElementById("ticket-file");
+  const previousInput = document.getElementById("previous-week-file");
 
-  if (files.length === 0) {
-    alert("Please select a CSV file first.");
+  const currentFiles = Array.from(currentInput.files);
+  const previousFiles = Array.from(previousInput.files);
+
+  if (currentFiles.length === 0) {
+    alert("Please select the current-week CSV file first.");
     return;
   }
 
-  const allNormalizedTickets = [];
-  let filesProcessed = 0;
-  
-  files.forEach(file => {
-    const reader = new FileReader();
-  
-    reader.onload = function(event) {
-      const csvText = event.target.result;
-  
+  if (previousFiles.length === 0) {
+    alert("Please select the previous-week CSV file.");
+    return;
+  }
+
+  async function readFiles(files) {
+    const allTickets = [];
+
+    for (const file of files) {
+      const csvText = await file.text();
+
       const lines = csvText
         .trim()
         .split(/\r?\n/);
-  
+
       const headers = lines[0]
         .split(",")
         .map(header => header.trim());
-  
+
       const source = detectSource(headers);
-  
+
       const uploadedTickets = lines
         .slice(1)
         .filter(line => line.trim() !== "")
@@ -820,37 +825,50 @@ function analyzeUploadedCsv() {
           const values = line
             .split(",")
             .map(value => value.trim());
-  
+
           const ticket = {};
-  
+
           headers.forEach((header, index) => {
             ticket[header] = values[index];
           });
-  
+
           return ticket;
         });
-  
+
       let normalizedTickets;
-  
+
       if (source === "servicenow") {
-        normalizedTickets = uploadedTickets.map(normalizeServiceNowTicket);
-      } else if (source === "jira") {
-        normalizedTickets = uploadedTickets.map(normalizeJiraTicket);
-      } else {
-        alert(`Unsupported CSV format: ${file.name}`);
-        return;
+        normalizedTickets =
+          uploadedTickets.map(normalizeServiceNowTicket);
       }
-  
-      allNormalizedTickets.push(...normalizedTickets);
-      filesProcessed++;
-  
-      if (filesProcessed === files.length) {
-        analyzeTickets(allNormalizedTickets);
+      else if (source === "jira") {
+        normalizedTickets =
+          uploadedTickets.map(normalizeJiraTicket);
       }
-    };
-  
-    reader.readAsText(file);
-  });
+      else {
+        throw new Error(`Unsupported CSV format: ${file.name}`);
+      }
+
+      allTickets.push(...normalizedTickets);
+    }
+
+    return allTickets;
+  }
+
+  try {
+    const currentTickets = await readFiles(currentFiles);
+    const previousTickets = await readFiles(previousFiles);
+
+    analyzeTickets(currentTickets);
+
+    window.previousWeekTickets = previousTickets;
+
+    document.getElementById("weekly-change-text").textContent =
+      `Previous week loaded successfully: ${previousTickets.length} tickets. Ready for week-over-week comparison.`;
+
+  } catch (error) {
+    alert(error.message);
+  }
 }
 
 function normalizeServiceNowTicket(ticket) {
