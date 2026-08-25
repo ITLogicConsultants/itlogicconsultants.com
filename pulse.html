@@ -771,94 +771,46 @@ function analyzeTickets(tickets = sampleTickets) {
   }
 
 function detectSource(headers) {
-  const normalizedHeaders = headers.map(header => header.toLowerCase());
 
-  if (
-    normalizedHeaders.includes("number") &&
-    normalizedHeaders.includes("short_description")
-  ) {
+  const normalizedHeaders = headers.map(header =>
+    String(header)
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, "_")
+  );
+
+  const hasAny = names =>
+    names.some(name => normalizedHeaders.includes(name));
+
+  const serviceNowMatch =
+    hasAny(["number", "incident_number", "ticket_number"]) &&
+    hasAny([
+      "short_description",
+      "description",
+      "category",
+      "assignment_group"
+    ]);
+
+  if (serviceNowMatch) {
     return "servicenow";
   }
 
-  if (
-    normalizedHeaders.includes("key") &&
-    normalizedHeaders.includes("summary")
-  ) {
+  const jiraMatch =
+    hasAny(["key", "issue_key", "issuekey"]) &&
+    hasAny([
+      "summary",
+      "description",
+      "issue_type",
+      "issuetype",
+      "project"
+    ]);
+
+  if (jiraMatch) {
     return "jira";
   }
 
   return "unknown";
-}      
-      
-async function analyzeUploadedCsv() {
-  const currentInput = document.getElementById("ticket-file");
-  const previousInput = document.getElementById("previous-week-file");
-
-  const currentFiles = Array.from(currentInput.files);
-  const previousFiles = Array.from(previousInput.files);
-
-  if (currentFiles.length === 0) {
-    alert("Please select the current-week CSV file first.");
-    return;
-  }
-
-  if (previousFiles.length === 0) {
-    alert("Please select the previous-week CSV file.");
-    return;
-  }
-
-  async function readFiles(files) {
-    const allTickets = [];
-
-    for (const file of files) {
-      const csvText = await file.text();
-
-      const lines = csvText
-        .trim()
-        .split(/\r?\n/);
-
-      const headers = lines[0]
-        .split(",")
-        .map(header => header.trim());
-
-      const source = detectSource(headers);
-
-      const uploadedTickets = lines
-        .slice(1)
-        .filter(line => line.trim() !== "")
-        .map(line => {
-          const values = line
-            .split(",")
-            .map(value => value.trim());
-
-          const ticket = {};
-
-          headers.forEach((header, index) => {
-            ticket[header] = values[index];
-          });
-
-          return ticket;
-        });
-
-      let normalizedTickets;
-
-      if (source === "servicenow") {
-        normalizedTickets =
-          uploadedTickets.map(normalizeServiceNowTicket);
-      }
-      else if (source === "jira") {
-        normalizedTickets =
-          uploadedTickets.map(normalizeJiraTicket);
-      }
-      else {
-        throw new Error(`Unsupported CSV format: ${file.name}`);
-      }
-
-      allTickets.push(...normalizedTickets);
-    }
-
-    return allTickets;
-  }
+}
 
   function summarizeWeek(tickets) {
     const typeCounts = {};
@@ -1339,27 +1291,68 @@ function generateManagerReport() {
 }      
 
 function normalizeServiceNowTicket(ticket) {
-  return {
-    id: ticket.number || ticket.id || "",
-    source: "servicenow",
-    department:
-      ticket.department ||
-      ticket.assignment_group ||
-      "Unknown",
-    type:
-      ticket.type ||
-      ticket.category ||
-      "other",
-    severity:
-      ticket.severity ||
-      ticket.priority ||
-      "unknown",
-    description:
-      ticket.short_description ||
-      ticket.description ||
-      ""
+
+  const get = (...names) => {
+    for (const name of names) {
+      if (
+        ticket[name] !== undefined &&
+        ticket[name] !== null &&
+        String(ticket[name]).trim() !== ""
+      ) {
+        return ticket[name];
+      }
+    }
+
+    return "";
   };
-}  
+
+  return {
+    id: get(
+      "number",
+      "incident_number",
+      "ticket_number",
+      "id"
+    ),
+
+    source: "servicenow",
+
+    department: get(
+      "department",
+      "business_unit",
+      "location",
+      "assignment_group"
+    ) || "Unknown",
+
+    type: get(
+      "type",
+      "category",
+      "subcategory"
+    ) || "other",
+
+    severity: get(
+      "severity",
+      "priority",
+      "impact"
+    ) || "unknown",
+
+    description: get(
+      "short_description",
+      "description"
+    ),
+
+    status: get(
+      "state",
+      "status"
+    ) || "unknown",
+
+    opened_at: get(
+      "opened_at",
+      "opened",
+      "created",
+      "sys_created_on"
+    )
+  };
+}
 
 function normalizeJiraTicket(ticket) {
   return {
