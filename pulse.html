@@ -411,6 +411,10 @@
       </div>
       
     </div>
+
+    <button class="button" onclick="generateManagerReport()">
+      Generate Manager Report
+    </button>
     
     <script>
 
@@ -1010,6 +1014,283 @@ async function analyzeUploadedCsv() {
     alert(error.message);
   }
 }
+
+function generateManagerReport() {
+
+  const ticketCount =
+    document.getElementById("ticket-count").textContent;
+
+  const sourceCount =
+    document.getElementById("source-count").textContent;
+
+  const departmentCount =
+    document.getElementById("department-count").textContent;
+
+  const patternCount =
+    document.getElementById("pattern-count").textContent;
+
+  const highPriorityCount =
+    document.getElementById("high-priority-count").textContent;
+
+  const topDepartment =
+    document.getElementById("top-department").textContent;
+
+  const operationalRisk =
+    document.getElementById("operational-risk").textContent;
+
+  const managementMessage =
+    document.getElementById("management-message").textContent;
+
+  const topPattern =
+    document.getElementById("signal-top-pattern").textContent;
+
+  const networkCount =
+    document.getElementById("signal-network-count").textContent;
+
+  const highNetworkCount =
+    document.getElementById("signal-network-high").textContent;
+
+  const whatHappened =
+    document.getElementById("what-happened").textContent;
+
+  const whyItMatters =
+    document.getElementById("why-it-matters").textContent;
+
+  const needsAttention =
+    document.getElementById("needs-attention").textContent;
+
+  const recommendedActions =
+    document.getElementById("recommended-actions-text").textContent;
+
+  const managementInsight =
+    document.getElementById("key-management-insight").textContent;
+
+  const weeklyChange =
+    document.getElementById("weekly-change-text").textContent;
+
+  const reportWindow = window.open("", "_blank");
+
+  if (!reportWindow) {
+    alert("Please allow pop-ups to generate the report.");
+    return;
+  }
+
+  reportWindow.document.write(`
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>HI2P Pulse Weekly Operational Intelligence Report</title>
+
+      <style>
+        body {
+          font-family: Arial, Helvetica, sans-serif;
+          max-width: 900px;
+          margin: 40px auto;
+          padding: 20px;
+          color: #1d2939;
+          line-height: 1.6;
+        }
+
+        h1 {
+          margin-bottom: 5px;
+        }
+
+        h2 {
+          color: #175cd3;
+          border-bottom: 1px solid #d0d5dd;
+          padding-bottom: 8px;
+          margin-top: 32px;
+        }
+
+        .subtitle {
+          color: #667085;
+          margin-bottom: 30px;
+        }
+
+        .risk {
+          border-left: 5px solid #175cd3;
+          background: #f2f4f7;
+          padding: 16px;
+          margin: 20px 0;
+        }
+
+        .metrics {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 12px;
+          margin: 20px 0;
+        }
+
+        .metric {
+          border: 1px solid #d0d5dd;
+          border-radius: 8px;
+          padding: 14px;
+        }
+
+        .metric-label {
+          font-size: 12px;
+          color: #667085;
+        }
+
+        .metric-value {
+          font-size: 20px;
+          font-weight: bold;
+          margin-top: 4px;
+        }
+
+        .section {
+          margin-top: 22px;
+        }
+
+        .section-title {
+          font-weight: bold;
+          margin-bottom: 6px;
+        }
+
+        .highlight {
+          background: #eff8ff;
+          border-left: 4px solid #2e90fa;
+          padding: 15px;
+          margin-top: 20px;
+        }
+
+        .footer {
+          margin-top: 40px;
+          padding-top: 15px;
+          border-top: 1px solid #d0d5dd;
+          color: #667085;
+          font-size: 12px;
+        }
+
+        @media print {
+          body {
+            margin: 0;
+          }
+
+          .print-button {
+            display: none;
+          }
+        }
+      </style>
+    </head>
+
+    <body>
+
+      <h1>HI2P Pulse</h1>
+
+      <div class="subtitle">
+        Weekly Operational Intelligence Report
+      </div>
+
+      <div class="risk">
+        <strong>${operationalRisk}</strong><br>
+        ${managementMessage}
+      </div>
+
+      <h2>Weekly Snapshot</h2>
+
+      <div class="metrics">
+
+        <div class="metric">
+          <div class="metric-label">Tickets Analyzed</div>
+          <div class="metric-value">${ticketCount}</div>
+        </div>
+
+        <div class="metric">
+          <div class="metric-label">Source Systems</div>
+          <div class="metric-value">${sourceCount}</div>
+        </div>
+
+        <div class="metric">
+          <div class="metric-label">Departments Affected</div>
+          <div class="metric-value">${departmentCount}</div>
+        </div>
+
+        <div class="metric">
+          <div class="metric-label">Recurring Patterns</div>
+          <div class="metric-value">${patternCount}</div>
+        </div>
+
+        <div class="metric">
+          <div class="metric-label">High Priority Tickets</div>
+          <div class="metric-value">${highPriorityCount}</div>
+        </div>
+
+        <div class="metric">
+          <div class="metric-label">Highest Activity Area</div>
+          <div class="metric-value">${topDepartment}</div>
+        </div>
+
+      </div>
+
+      <h2>Operational Signals</h2>
+
+      <div class="section">
+        <div class="section-title">Top Issue Pattern</div>
+        ${topPattern}
+      </div>
+
+      <div class="section">
+        <div class="section-title">Network / Wi-Fi Tickets</div>
+        ${networkCount}
+      </div>
+
+      <div class="section">
+        <div class="section-title">High Priority Network Tickets</div>
+        ${highNetworkCount}
+      </div>
+
+      <h2>Management Intelligence</h2>
+
+      <div class="section">
+        <div class="section-title">What Happened</div>
+        ${whatHappened}
+      </div>
+
+      <div class="section">
+        <div class="section-title">Why It Matters</div>
+        ${whyItMatters}
+      </div>
+
+      <div class="section">
+        <div class="section-title">Needs Attention</div>
+        ${needsAttention}
+      </div>
+
+      <div class="highlight">
+        <div class="section-title">Key Management Insight</div>
+        ${managementInsight}
+      </div>
+
+      <div class="highlight">
+        <div class="section-title">What Changed This Week</div>
+        ${weeklyChange}
+      </div>
+
+      <h2>Recommended Actions</h2>
+
+      <div class="section">
+        ${recommendedActions}
+      </div>
+
+      <div class="footer">
+        Generated by HI2P Pulse — ITLOGIC Consultants LLC
+      </div>
+
+      <br>
+
+      <button
+        class="print-button"
+        onclick="window.print()">
+        Print / Save as PDF
+      </button>
+
+    </body>
+    </html>
+  `);
+
+  reportWindow.document.close();
+}      
 
 function normalizeServiceNowTicket(ticket) {
   return {
