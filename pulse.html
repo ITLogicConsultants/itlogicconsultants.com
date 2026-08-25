@@ -954,7 +954,9 @@ async function analyzeUploadedCsv() {
   try {
     const currentTickets = await readFiles(currentFiles);
     const previousTickets = await readFiles(previousFiles);
-
+    
+    window.currentWeekTickets = currentTickets;
+    
     analyzeTickets(currentTickets);
 
     window.previousWeekTickets = previousTickets;
@@ -1016,6 +1018,45 @@ async function analyzeUploadedCsv() {
 }
 
 function generateManagerReport() {
+
+  const currentTickets = window.currentWeekTickets || [];
+
+  const sourceSystems = [
+    ...new Set(
+      currentTickets
+        .map(ticket => ticket.source)
+        .filter(Boolean)
+    )
+  ];
+  
+  const sourceSystemText =
+    sourceSystems.length > 0
+      ? sourceSystems
+          .map(source =>
+            source === "servicenow"
+              ? "ServiceNow"
+              : source === "jira"
+                ? "Jira"
+                : source
+          )
+          .join(", ")
+      : "Unknown";
+  
+  const ticketDates = currentTickets
+    .map(ticket => ticket.opened_at)
+    .filter(Boolean)
+    .map(value => new Date(value))
+    .filter(date => !isNaN(date));
+  
+  let reportingPeriod = "Not provided in export";
+  
+  if (ticketDates.length > 0) {
+    const earliest = new Date(Math.min(...ticketDates));
+    const latest = new Date(Math.max(...ticketDates));
+  
+    reportingPeriod =
+      `${earliest.toLocaleDateString()} – ${latest.toLocaleDateString()}`;
+  }
 
   const ticketCount =
     document.getElementById("ticket-count").textContent;
@@ -1180,6 +1221,11 @@ function generateManagerReport() {
 
       <div class="subtitle">
         Weekly Operational Intelligence Report
+      </div>
+
+      <div style="margin-bottom: 25px; color:#475467;">
+        <strong>Reporting Period:</strong> ${reportingPeriod}<br>
+        <strong>Source:</strong> ${sourceSystemText}
       </div>
 
       <div class="risk">
