@@ -255,7 +255,40 @@
     </button>
 
       <div style="margin-top: 25px;">
-        <h3>Analyze Your Ticket Export</h3>
+
+        <h3>Current Week Ticket Export</h3>
+      
+        <p>
+          Select the ticket export for the week you want HI2P Pulse
+          to analyze and report on.
+        </p>
+      
+        <input
+          type="file"
+          id="ticket-file"
+          accept=".csv"
+        />
+
+        <div style="margin-top: 30px;">
+          <h3>Previous Week Ticket Export</h3>
+      
+          <p>
+            Optional: select the immediately preceding week's ticket export
+            to generate the "What Changed This Week" comparison.
+          </p>
+      
+          <input
+            type="file"
+            id="previous-week-file"
+            accept=".csv"
+          />
+        </div>
+      
+        <button class="button" onclick="analyzeUploadedCsv()">
+          Analyze Weekly Activity
+        </button>
+      
+      </div>
       
         <p>
           Select a CSV ticket export to generate operational intelligence.
