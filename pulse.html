@@ -685,12 +685,21 @@ function analyzeTickets(tickets = sampleTickets) {
     managementMessage =
       `A significant recurring infrastructure pattern is present across ${networkSources.size} source systems and requires management review.`;
   } else if (
-    networkRelated >= 3 &&
-    networkHighPriorityTickets >= 2
+      networkRelated >= 3 &&
+      networkHighPriorityTickets >= 2
   ) {
-    operationalRisk = "ELEVATED";
-    managementMessage =
-      `A significant recurring infrastructure pattern is affecting multiple departments and should be investigated.`;
+      operationalRisk = "ELEVATED";
+  
+      if (departments.size >= 2) {
+          managementMessage =
+            `A significant recurring infrastructure pattern is affecting multiple departments and should be investigated.`;
+      } else if (departments.size === 1) {
+          managementMessage =
+            `A significant recurring infrastructure pattern was detected within the available affected-area data and should be investigated.`;
+      } else {
+          managementMessage =
+            `A significant recurring infrastructure pattern was detected, but affected department information is not available in the ticket export.`;
+      }
   } else if (recurringPatterns > 0) {
     operationalRisk = "MODERATE";
     managementMessage =
