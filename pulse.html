@@ -526,8 +526,9 @@ function analyzeTickets(tickets = sampleTickets) {
     .join(" and ");
 
   document.getElementById("what-happened").textContent =
-    `The most frequent ticket patterns were ${topTypes}, affecting ${departments.size} departments.`;
-
+    departments.size > 0
+      ? `The most frequent ticket patterns were ${topTypes}, affecting ${departments.size} departments.`
+      : `The most frequent ticket patterns were ${topTypes}. Affected department information was not provided in the ticket export.`;
   const networkRelated =
     (typeCounts["network"] || 0) + (typeCounts["wifi"] || 0);
 
@@ -751,7 +752,9 @@ function analyzeTickets(tickets = sampleTickets) {
   }
   else if (operationalRisk === "ELEVATED") {
     recommendedActions =
-      "Investigate the recurring pattern across affected departments, review the high-priority tickets, and determine whether proactive intervention is required.";
+      departments.size > 0
+        ? "Investigate the recurring pattern across affected departments, review the high-priority tickets, and determine whether proactive intervention is required."
+        : "Investigate the recurring network pattern, review the high-priority tickets, and determine whether proactive intervention is required. Affected-area data should also be included in future exports to improve impact analysis.";
   }
   else {
     recommendedActions =
@@ -773,7 +776,9 @@ function analyzeTickets(tickets = sampleTickets) {
   }
   else if (operationalRisk === "ELEVATED") {
     keyManagementInsight =
-      "Recurring high-priority activity across multiple departments suggests a broader infrastructure concern that may require proactive intervention before service impact increases.";
+      departments.size > 0
+        ? "Recurring high-priority activity across multiple departments suggests a broader infrastructure concern that may require proactive intervention before service impact increases."
+        : "Recurring high-priority network activity indicates a broader infrastructure concern, but the scope of departmental impact cannot be determined from the available export.";
   }
   else if (operationalRisk === "MODERATE") {
     keyManagementInsight =
