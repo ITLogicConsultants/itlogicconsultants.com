@@ -618,6 +618,15 @@ function analyzeTickets(tickets = sampleTickets) {
       `A recurring network-related pattern was detected within the ticket activity, affecting multiple departments. ` +
       `However, the pattern was not detected across multiple source systems, so it should currently be treated as a single-system operational signal rather than a cross-system correlation.`;
   
+  } else if (
+    networkRelated >= 3 &&
+    networkHighPriorityTickets >= 2 &&
+    departments.size === 0
+  ) {
+    whyItMatters =
+      `A significant recurring network-related pattern was detected, including ${networkHighPriorityTickets} high-priority tickets. ` +
+      `The operational signal is meaningful, but the scope of departmental impact cannot be determined because affected-area information was not provided in the export.`;
+  
   } else if (recurringPatterns > 0) {
     whyItMatters =
       `Repeated issue types were detected across the ticket activity and may warrant further investigation.`;
@@ -660,6 +669,15 @@ function analyzeTickets(tickets = sampleTickets) {
   } else if (networkRelated >= 3 && departments.size >= 2) {
     needsAttention =
       `Review the recurring network and Wi-Fi activity within the affected source system and continue monitoring for similar activity in other ticketing systems.`;
+  
+  } else if (
+    networkRelated >= 3 &&
+    networkHighPriorityTickets >= 2 &&
+    departments.size === 0
+  ) {
+    needsAttention =
+      `Review the recurring network and Wi-Fi activity and the ${networkHighPriorityTickets} high-priority tickets. ` +
+      `Determine whether a shared infrastructure issue exists, and include affected-area information in future exports to improve impact analysis.`;
   
   } else if (recurringPatterns > 0) {
     needsAttention =
