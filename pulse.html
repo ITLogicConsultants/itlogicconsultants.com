@@ -438,15 +438,29 @@ function analyzeTickets(tickets = sampleTickets) {
     tickets.map(ticket => ticket.source || "sample")
   );
 
-  const departments = new Set(
-    tickets.map(ticket => ticket.department)
-  );
+  const validDepartments = tickets
+    .map(ticket => ticket.department)
+    .filter(department =>
+      department &&
+      department !== "Unknown" &&
+      department !== "Affected area not available"
+    );
+  
+  const departments = new Set(validDepartments);
 
   const departmentCounts = {};
 
   tickets.forEach(ticket => {
-    departmentCounts[ticket.department] =
-      (departmentCounts[ticket.department] || 0) + 1;
+
+    if (
+      ticket.department &&
+      ticket.department !== "Unknown" &&
+      ticket.department !== "Affected area not available"
+    ) {
+      departmentCounts[ticket.department] =
+        (departmentCounts[ticket.department] || 0) + 1;
+    }
+  
   });
   
   const departmentEntries = Object.entries(departmentCounts);
@@ -1403,6 +1417,10 @@ function normalizeServiceNowTicket(ticket) {
       "department",
       "business_unit",
       "location",
+      "business_service"
+    ) || "Affected area not available",
+    
+    support_team: get(
       "assignment_group"
     ) || "Unknown",
 
