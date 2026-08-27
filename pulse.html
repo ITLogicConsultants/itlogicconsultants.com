@@ -944,7 +944,8 @@ function detectSource(headers) {
           headers.forEach((header, index) => {
             ticket[header] = values[index];
           });
-
+          
+          console.log("RAW CSV TICKET:", ticket);
           return ticket;
         });
 
