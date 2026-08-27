@@ -914,7 +914,13 @@ function detectSource(headers) {
 
       const headers = lines[0]
         .split(",")
-        .map(header => header.trim());
+        .map(header =>
+          header
+            .trim()
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, "_")
+            .replace(/^_+|_+$/g, "")
+        );
 
       const source = detectSource(headers);
 
@@ -1506,27 +1512,41 @@ function normalizeServiceNowTicket(ticket) {
 }
 
 function normalizeJiraTicket(ticket) {
+
   return {
-    id: ticket.key || ticket.id || "",
+    id:
+      ticket.issue_key ||
+      ticket.key ||
+      ticket.id ||
+      "",
+
     source: "jira",
+
     department:
-    ticket.department ||
-    ticket.project ||
-    "Unknown",
+      ticket.department ||
+      ticket.location ||
+      "Affected area not available",
+
     type:
+      ticket.component_s ||
       ticket.component ||
       ticket.issue_type ||
+      ticket.issuetype ||
       "other",
+
     severity:
       ticket.priority ||
       "unknown",
+
     description:
       ticket.summary ||
       ticket.description ||
       "",
+
     status:
       ticket.status ||
       "unknown",
+
     opened_at:
       ticket.created ||
       ticket.opened_at ||
