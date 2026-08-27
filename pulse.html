@@ -1105,7 +1105,9 @@ function detectSource(headers) {
       ` High-priority tickets changed from ${previous.highPriorityTickets} to ${current.highPriorityTickets}.`;
     
     weeklyChange +=
-      ` Recurring patterns changed from ${previous.recurringPatterns} to ${current.recurringPatterns}.`;
+      current.recurringPatterns === previous.recurringPatterns
+        ? `Recurring patterns remained at ${current.recurringPatterns}.`
+        : `Recurring patterns changed from ${previous.recurringPatterns} to ${current.recurringPatterns}.`
     
     if (previous.topPattern !== current.topPattern) {
       weeklyChange +=
