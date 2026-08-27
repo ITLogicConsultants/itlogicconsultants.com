@@ -1022,10 +1022,30 @@ function detectSource(headers) {
   
     let operationalRisk;
   
+    const networkSources = new Set(
+      tickets
+        .filter(ticket => {
+          const type = String(ticket.type || "").toLowerCase();
+          return type === "network" || type === "wifi";
+        })
+        .map(ticket => ticket.source)
+        .filter(Boolean)
+    );
+    
     if (criticalCount > 0) {
       operationalRisk = "CRITICAL";
     }
-    else if (networkRelated >= 3 && networkHighPriorityTickets >= 2) {
+    else if (
+      networkRelated >= 3 &&
+      networkSources.size >= 2 &&
+      networkHighPriorityTickets >= 2
+    ) {
+      operationalRisk = "HIGH";
+    }
+    else if (
+      networkRelated >= 3 &&
+      networkHighPriorityTickets >= 2
+    ) {
       operationalRisk = "ELEVATED";
     }
     else if (recurringPatterns > 0) {
@@ -1034,7 +1054,7 @@ function detectSource(headers) {
     else {
       operationalRisk = "LOW";
     }
-  
+      
     const sortedTypes = Object.entries(typeCounts)
       .sort((a, b) => b[1] - a[1]);
   
