@@ -444,6 +444,22 @@
       { id: "T009", department: "Laboratory", type: "login", severity: "low" },
       { id: "T010", department: "Radiology", type: "network", severity: "high" }
     ];  
+
+function formatIssueType(type) {
+  const value = String(type || "").trim().toLowerCase();
+
+  const labels = {
+    system_down: "system outage",
+    wifi: "Wi-Fi",
+    network: "network",
+    printer: "printer",
+    login: "login",
+    password_reset: "password reset",
+    other: "other"
+  };
+
+  return labels[value] || value.replace(/_/g, " ");
+}
       
 function analyzeTickets(tickets = sampleTickets) {
   const ticketCount = tickets.length;
@@ -536,7 +552,7 @@ function analyzeTickets(tickets = sampleTickets) {
   const topTypes = Object.entries(typeCounts)
     .sort((a, b) => b[1] - a[1])
     .slice(0, 2)
-    .map(([type, count]) => `${type} (${count})`)
+    .map(([type, count]) => `${formatIssueType(type)} (${count})`)
     .join(" and ");
 
   document.getElementById("what-happened").textContent =
@@ -610,7 +626,7 @@ function analyzeTickets(tickets = sampleTickets) {
   if (criticalOperationalCount > 0) {
     whyItMatters =
       `A critical operational event was detected in ${criticalOperationalTicket.department}. ` +
-      `The ${criticalOperationalTicket.type} ticket requires attention based on its priority and operational impact, even though the issue is not recurring.`;
+      `The ${formatIssueType(criticalOperationalTicket.type)} ticket requires attention based on its priority and operational impact, even though the issue is not recurring.`;
   
   } else if (
     networkRelated >= 3 &&
@@ -664,7 +680,7 @@ function analyzeTickets(tickets = sampleTickets) {
   let needsAttention;
   if (criticalOperationalCount > 0) {
     needsAttention =
-      `Immediate management attention is recommended for the ${criticalOperationalTicket.department} ${criticalOperationalTicket.type} event. ` +
+      `Immediate management attention is recommended for the ${criticalOperationalTicket.department} ${criticalOperationalTicket.type} event. ` +`Immediate management attention is recommended for the ${criticalOperationalTicket.department} ${formatIssueType(criticalOperationalTicket.type)} event. ` +
       `Review service impact immediately and determine whether incident escalation or coordinated response is required.`;
   
   } else if (
