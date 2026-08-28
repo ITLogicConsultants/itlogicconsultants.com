@@ -624,10 +624,10 @@ function analyzeTickets(tickets = sampleTickets) {
   let whyItMatters;
 
   if (criticalOperationalCount > 0) {
-    whyItMatters =
-      `A critical operational event was detected in ${criticalOperationalTicket.department}. ` +
-      `The ${formatIssueType(criticalOperationalTicket.type)} ticket requires attention based on its priority and operational impact, even though the issue is not recurring.`;
-  
+    needsAttention =
+      `Immediate management attention is recommended for the ${criticalOperationalTicket.department} ${formatIssueType(criticalOperationalTicket.type)} event. ` +
+      `Review service impact immediately and determine whether incident escalation or coordinated response is required.`;
+  }
   } else if (
     networkRelated >= 3 &&
     networkSources.size >= 2 &&
