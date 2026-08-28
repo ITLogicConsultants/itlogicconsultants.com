@@ -936,9 +936,31 @@ function detectSource(headers) {
         .filter(line => line.trim() !== "")
         .map(line => {
 
-          const values = line
-            .split(",")
-            .map(value => value.trim());
+          const values = [];
+          let currentValue = "";
+          let insideQuotes = false;
+          
+          for (let i = 0; i < line.length; i++) {
+            const char = line[i];
+          
+            if (char === '"') {
+              if (insideQuotes && line[i + 1] === '"') {
+                currentValue += '"';
+                i++;
+              } else {
+                insideQuotes = !insideQuotes;
+              }
+            }
+            else if (char === "," && !insideQuotes) {
+              values.push(currentValue.trim());
+              currentValue = "";
+            }
+            else {
+              currentValue += char;
+            }
+          }
+          
+          values.push(currentValue.trim());
 
           const ticket = {};
 
