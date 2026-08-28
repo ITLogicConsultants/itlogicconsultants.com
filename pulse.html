@@ -1121,6 +1121,87 @@ function detectSource(headers) {
     
     analyzeTickets(currentTickets);
 
+    const currentTicketCount = currentTickets.length;
+
+    const ticketsWithId = currentTickets.filter(ticket =>
+      String(ticket.id || "").trim() !== ""
+    ).length;
+    
+    const ticketsWithDescription = currentTickets.filter(ticket =>
+      String(ticket.description || "").trim() !== ""
+    ).length;
+    
+    const ticketsWithSeverity = currentTickets.filter(ticket =>
+      String(ticket.severity || "").trim() !== "" &&
+      String(ticket.severity || "").toLowerCase() !== "unknown"
+    ).length;
+    
+    const ticketsWithDepartment = currentTickets.filter(ticket =>
+      String(ticket.department || "").trim() !== "" &&
+      ticket.department !== "Affected area not available" &&
+      ticket.department !== "Unknown"
+    ).length;
+    
+    const ticketsWithDate = currentTickets.filter(ticket =>
+      String(ticket.opened_at || "").trim() !== ""
+    ).length;
+    
+    let dataQualityStatus;
+    let dataQualityMessage;
+    
+    if (
+      currentTicketCount > 0 &&
+      ticketsWithId === currentTicketCount &&
+      ticketsWithDescription === currentTicketCount &&
+      ticketsWithSeverity === currentTicketCount &&
+      ticketsWithDepartment === currentTicketCount &&
+      ticketsWithDate === currentTicketCount
+    ) {
+      dataQualityStatus = "GOOD";
+      dataQualityMessage =
+        "All key analysis fields are available.";
+    }
+    else if (
+      currentTicketCount > 0 &&
+      ticketsWithDescription > 0 &&
+      ticketsWithSeverity > 0
+    ) {
+      dataQualityStatus = "LIMITED";
+    
+      const missingAreas = [];
+    
+      if (ticketsWithId < currentTicketCount) {
+        missingAreas.push("ticket ID");
+      }
+    
+      if (ticketsWithDepartment < currentTicketCount) {
+        missingAreas.push("affected area");
+      }
+    
+      if (ticketsWithDate < currentTicketCount) {
+        missingAreas.push("opened/created date");
+      }
+    
+      if (ticketsWithSeverity < currentTicketCount) {
+        missingAreas.push("priority/severity");
+      }
+    
+      if (ticketsWithDescription < currentTicketCount) {
+        missingAreas.push("description");
+      }
+    
+      dataQualityMessage =
+        `Analysis can continue, but some records are missing: ${missingAreas.join(", ")}.`;
+    }
+    else {
+      dataQualityStatus = "INSUFFICIENT";
+      dataQualityMessage =
+        "The export does not contain enough ticket detail for reliable operational analysis.";
+    }
+    
+    document.getElementById("data-quality-text").textContent =
+      `${dataQualityStatus} — ${dataQualityMessage}`;
+
     window.previousWeekTickets = previousTickets;
 
     const current = summarizeWeek(currentTickets);
