@@ -334,6 +334,108 @@
       flex-direction: column;
     }
   }
+
+  /* V92 - Tickets by Issue Type */
+
+  .dashboard-visual {
+    margin: 26px 0;
+    padding: 24px;
+  
+    background: #0b1f39;
+    border: 1px solid #31577f;
+    border-radius: 14px;
+  
+    box-shadow: 0 10px 28px rgba(0,0,0,0.18);
+  }
+  
+  .dashboard-visual-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+    margin-bottom: 24px;
+  }
+  
+  .dashboard-visual-title {
+    color: #ffffff;
+    font-size: 20px;
+    font-weight: 800;
+  }
+  
+  .dashboard-visual-subtitle {
+    margin-top: 5px;
+    color: #9fb8cf;
+    font-size: 13px;
+  }
+  
+  .dashboard-visual-badge {
+    padding: 6px 10px;
+  
+    color: #8eb9ff;
+    background: rgba(91,140,255,0.10);
+    border: 1px solid rgba(91,140,255,0.35);
+  
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.8px;
+  
+    white-space: nowrap;
+  }
+  
+  .issue-chart-row {
+    display: grid;
+    grid-template-columns: 125px 1fr 42px;
+    align-items: center;
+    gap: 14px;
+    margin-top: 16px;
+  }
+  
+  .issue-chart-label {
+    color: #d6e4f0;
+    font-size: 14px;
+    font-weight: 700;
+  }
+  
+  .issue-chart-track {
+    height: 15px;
+    background: #071426;
+    border-radius: 20px;
+    overflow: hidden;
+  }
+  
+  .issue-chart-bar {
+    height: 100%;
+    min-width: 5px;
+  
+    background:
+      linear-gradient(
+        90deg,
+        #4f7cff,
+        #6e5cff,
+        #42b8ff
+      );
+  
+    border-radius: 20px;
+  }
+  
+  .issue-chart-count {
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 800;
+    text-align: right;
+  }
+  
+  @media (max-width: 750px) {
+    .issue-chart-row {
+      grid-template-columns: 90px 1fr 32px;
+    }
+  
+    .dashboard-visual-header {
+      flex-direction: column;
+    }
+  }  
+    
   </style>
 </head>
 
@@ -599,6 +701,28 @@
       
       </div>
 
+      <div class="dashboard-visual">
+
+        <div class="dashboard-visual-header">
+          <div>
+            <div class="dashboard-visual-title">
+              Tickets by Issue Type
+            </div>
+      
+            <div class="dashboard-visual-subtitle">
+              Distribution of analyzed ticket activity by operational issue.
+            </div>
+          </div>
+      
+          <div class="dashboard-visual-badge">
+            LIVE DATA
+          </div>
+        </div>
+      
+        <div id="issue-type-chart"></div>
+      
+      </div>
+
       <div id="management-summary" class="management-summary">
         <div class="management-summary-label">Management Summary</div>
         <div id="operational-risk" class="operational-risk">
@@ -806,6 +930,48 @@ function analyzeTickets(tickets = sampleTickets) {
   document.getElementById("high-priority-count").textContent = highPriorityTickets;
   document.getElementById("top-department").textContent =
     topDepartmentText;
+
+  const issueTypeChart =
+    document.getElementById("issue-type-chart");
+  
+  const sortedIssueTypes =
+    Object.entries(typeCounts)
+      .sort((a, b) => b[1] - a[1]);
+  
+  const maxIssueCount =
+    sortedIssueTypes.length > 0
+      ? sortedIssueTypes[0][1]
+      : 1;
+  
+  issueTypeChart.innerHTML =
+    sortedIssueTypes
+      .map(([type, count]) => {
+  
+        const width =
+          Math.round((count / maxIssueCount) * 100);
+  
+        return `
+          <div class="issue-chart-row">
+  
+            <div class="issue-chart-label">
+              ${formatIssueType(type)}
+            </div>
+  
+            <div class="issue-chart-track">
+              <div
+                class="issue-chart-bar"
+                style="width:${width}%;">
+              </div>
+            </div>
+  
+            <div class="issue-chart-count">
+              ${count}
+            </div>
+  
+          </div>
+        `;
+      })
+      .join("");
 
   const topTypes = Object.entries(typeCounts)
     .sort((a, b) => b[1] - a[1])
