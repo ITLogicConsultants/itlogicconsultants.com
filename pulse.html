@@ -629,7 +629,118 @@
     display: none;
   }
 }    
-    
+  /* V97 - Weekly Operational Trend */
+
+  .weekly-trend-panel {
+    margin: 26px 0;
+    padding: 24px;
+  
+    background:
+      linear-gradient(
+        145deg,
+        #0a1b32,
+        #102645
+      );
+  
+    border: 1px solid #31577f;
+    border-radius: 14px;
+  
+    box-shadow: 0 12px 30px rgba(0,0,0,0.20);
+  }
+  
+  .weekly-trend-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+  }
+  
+  .weekly-trend-card {
+    padding: 16px;
+  
+    background: #102b4e;
+    border: 1px solid #31577f;
+    border-radius: 12px;
+  }
+  
+  .weekly-trend-label {
+    color: #9fb8cf;
+    font-size: 12px;
+    margin-bottom: 14px;
+  }
+  
+  .weekly-trend-values {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+  
+  .weekly-trend-value {
+    color: #ffffff;
+    font-size: 21px;
+    font-weight: 800;
+  }
+  
+  .weekly-trend-arrow {
+    color: #7da9ff;
+    font-size: 18px;
+    font-weight: 800;
+  }
+  
+  .weekly-trend-direction {
+    margin-top: 11px;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+  }
+  
+  .trend-up {
+    color: #ffb86b;
+  }
+  
+  .trend-down {
+    color: #69e6aa;
+  }
+  
+  .trend-same {
+    color: #9fb8cf;
+  }
+  
+  .weekly-trend-empty {
+    padding: 18px;
+  
+    color: #9fb8cf;
+    background: #081a30;
+    border: 1px dashed #31577f;
+    border-radius: 10px;
+  
+    font-size: 13px;
+  }
+  
+  .weekly-trend-assessment {
+    margin-top: 18px;
+    padding: 16px 18px;
+  
+    background: #081a30;
+    border-left: 4px solid #5b8cff;
+    border-radius: 8px;
+  
+    color: #d6e4f0;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  
+  @media (max-width: 900px) {
+    .weekly-trend-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media (max-width: 550px) {
+    .weekly-trend-grid {
+      grid-template-columns: 1fr;
+    }
+  }  
     
   </style>
 </head>
@@ -971,6 +1082,32 @@
       
       </div>
 
+      <div class="weekly-trend-panel">
+
+        <div class="dashboard-visual-header">
+          <div>
+            <div class="dashboard-visual-title">
+              Weekly Operational Trend
+            </div>
+      
+            <div class="dashboard-visual-subtitle">
+              Current-week operational activity compared with the previous week.
+            </div>
+          </div>
+      
+          <div class="dashboard-visual-badge">
+            WEEK OVER WEEK
+          </div>
+        </div>
+
+        <div id="weekly-trend-content">
+          <div class="weekly-trend-empty">
+            Upload current-week and previous-week ticket exports to generate the comparison.
+          </div>
+        </div>
+
+      </div>
+      
       <div id="management-summary" class="management-summary">
         <div class="management-summary-label">Management Summary</div>
         <div id="operational-risk" class="operational-risk">
@@ -2045,6 +2182,207 @@ function detectSource(headers) {
 
     const current = summarizeWeek(currentTickets);
     const previous = summarizeWeek(previousTickets);
+
+    const weeklyTrendContent =
+      document.getElementById("weekly-trend-content");
+    
+    const riskRank = {
+      LOW: 1,
+      MODERATE: 2,
+      ELEVATED: 3,
+      HIGH: 4,
+      CRITICAL: 5
+    };
+    
+    function trendClass(previousValue, currentValue) {
+    
+      if (currentValue > previousValue) {
+        return {
+          className: "trend-up",
+          text: "INCREASED"
+        };
+      }
+    
+      if (currentValue < previousValue) {
+        return {
+          className: "trend-down",
+          text: "DECREASED"
+        };
+      }
+    
+      return {
+        className: "trend-same",
+        text: "UNCHANGED"
+      };
+    }
+    
+    const ticketTrend =
+      trendClass(
+        previous.ticketCount,
+        current.ticketCount
+      );
+    
+    const networkTrend =
+      trendClass(
+        previous.networkRelated,
+        current.networkRelated
+      );
+    
+    const priorityTrend =
+      trendClass(
+        previous.highPriorityTickets,
+        current.highPriorityTickets
+      );
+    
+    const patternTrend =
+      trendClass(
+        previous.recurringPatterns,
+        current.recurringPatterns
+      );
+    
+    const previousRiskRank =
+      riskRank[previous.operationalRisk] || 0;
+    
+    const currentRiskRank =
+      riskRank[current.operationalRisk] || 0;
+    
+    let riskTrendClass = "trend-same";
+    let riskTrendText = "UNCHANGED";
+    
+    if (currentRiskRank > previousRiskRank) {
+      riskTrendClass = "trend-up";
+      riskTrendText = "RISK INCREASED";
+    }
+    else if (currentRiskRank < previousRiskRank) {
+      riskTrendClass = "trend-down";
+      riskTrendText = "RISK DECREASED";
+    }
+    
+    weeklyTrendContent.innerHTML = `
+      <div class="weekly-trend-grid">
+    
+        <div class="weekly-trend-card">
+          <div class="weekly-trend-label">
+            Ticket Volume
+          </div>
+    
+          <div class="weekly-trend-values">
+            <div class="weekly-trend-value">
+              ${previous.ticketCount}
+            </div>
+    
+            <div class="weekly-trend-arrow">→</div>
+    
+            <div class="weekly-trend-value">
+              ${current.ticketCount}
+            </div>
+          </div>
+    
+          <div class="weekly-trend-direction ${ticketTrend.className}">
+            ${ticketTrend.text}
+          </div>
+        </div>
+    
+        <div class="weekly-trend-card">
+          <div class="weekly-trend-label">
+            Network / Wi-Fi
+          </div>
+    
+          <div class="weekly-trend-values">
+            <div class="weekly-trend-value">
+              ${previous.networkRelated}
+            </div>
+    
+            <div class="weekly-trend-arrow">→</div>
+    
+            <div class="weekly-trend-value">
+              ${current.networkRelated}
+            </div>
+          </div>
+    
+          <div class="weekly-trend-direction ${networkTrend.className}">
+            ${networkTrend.text}
+          </div>
+        </div>
+    
+        <div class="weekly-trend-card">
+          <div class="weekly-trend-label">
+            High Priority
+          </div>
+    
+          <div class="weekly-trend-values">
+            <div class="weekly-trend-value">
+              ${previous.highPriorityTickets}
+            </div>
+    
+            <div class="weekly-trend-arrow">→</div>
+    
+            <div class="weekly-trend-value">
+              ${current.highPriorityTickets}
+            </div>
+          </div>
+    
+          <div class="weekly-trend-direction ${priorityTrend.className}">
+            ${priorityTrend.text}
+          </div>
+        </div>
+    
+        <div class="weekly-trend-card">
+          <div class="weekly-trend-label">
+            Recurring Patterns
+          </div>
+    
+          <div class="weekly-trend-values">
+            <div class="weekly-trend-value">
+              ${previous.recurringPatterns}
+            </div>
+    
+            <div class="weekly-trend-arrow">→</div>
+    
+            <div class="weekly-trend-value">
+              ${current.recurringPatterns}
+            </div>
+          </div>
+    
+          <div class="weekly-trend-direction ${patternTrend.className}">
+            ${patternTrend.text}
+          </div>
+        </div>
+    
+        <div class="weekly-trend-card">
+          <div class="weekly-trend-label">
+            Operational Risk
+          </div>
+    
+          <div class="weekly-trend-values">
+            <div class="weekly-trend-value">
+              ${previous.operationalRisk}
+            </div>
+    
+            <div class="weekly-trend-arrow">→</div>
+    
+            <div class="weekly-trend-value">
+              ${current.operationalRisk}
+            </div>
+          </div>
+    
+          <div class="weekly-trend-direction ${riskTrendClass}">
+            ${riskTrendText}
+          </div>
+        </div>
+    
+      </div>
+    
+      <div class="weekly-trend-assessment">
+        Operational risk moved from
+        <strong>${previous.operationalRisk}</strong>
+        to
+        <strong>${current.operationalRisk}</strong>.
+        Review the changes above together with the observed issue and
+        department signals before determining whether management action
+        should increase or decrease.
+      </div>
+    `;
     
     const ticketDifference =
       current.ticketCount - previous.ticketCount;
