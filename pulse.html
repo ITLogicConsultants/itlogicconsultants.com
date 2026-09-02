@@ -434,7 +434,58 @@
     .dashboard-visual-header {
       flex-direction: column;
     }
-  }  
+  }
+
+ /* V94 - Tickets by Department */
+
+.department-chart-row {
+  display: grid;
+  grid-template-columns: 180px 1fr 42px;
+  align-items: center;
+  gap: 14px;
+  margin-top: 16px;
+}
+
+.department-chart-label {
+  color: #d6e4f0;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.department-chart-track {
+  height: 15px;
+  background: #071426;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.department-chart-bar {
+  height: 100%;
+  min-width: 5px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #42b8ff,
+      #5b8cff,
+      #7d6cff
+    );
+
+  border-radius: 20px;
+}
+
+.department-chart-count {
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 800;
+  text-align: right;
+}
+
+@media (max-width: 750px) {
+  .department-chart-row {
+    grid-template-columns: 120px 1fr 32px;
+  }
+}   
     
   </style>
 </head>
@@ -723,6 +774,28 @@
       
       </div>
 
+      <div class="dashboard-visual">
+
+        <div class="dashboard-visual-header">
+          <div>
+            <div class="dashboard-visual-title">
+              Tickets by Department
+            </div>
+      
+            <div class="dashboard-visual-subtitle">
+              Ticket concentration across affected operational areas.
+            </div>
+          </div>
+      
+          <div class="dashboard-visual-badge">
+            LIVE DATA
+          </div>
+        </div>
+      
+        <div id="department-chart"></div>
+      
+      </div>
+
       <div id="management-summary" class="management-summary">
         <div class="management-summary-label">Management Summary</div>
         <div id="operational-risk" class="operational-risk">
@@ -972,6 +1045,54 @@ function analyzeTickets(tickets = sampleTickets) {
         `;
       })
       .join("");
+
+  const departmentChart =
+    document.getElementById("department-chart");
+  
+  const sortedDepartments =
+    Object.entries(departmentCounts)
+      .sort((a, b) => b[1] - a[1]);
+  
+  const maxDepartmentCount =
+    sortedDepartments.length > 0
+      ? sortedDepartments[0][1]
+      : 1;
+  
+  departmentChart.innerHTML =
+    sortedDepartments.length > 0
+      ? sortedDepartments
+          .map(([department, count]) => {
+  
+            const width =
+              Math.round((count / maxDepartmentCount) * 100);
+  
+            return `
+              <div class="department-chart-row">
+  
+                <div class="department-chart-label">
+                  ${department}
+                </div>
+  
+                <div class="department-chart-track">
+                  <div
+                    class="department-chart-bar"
+                    style="width:${width}%;">
+                  </div>
+                </div>
+  
+                <div class="department-chart-count">
+                  ${count}
+                </div>
+  
+              </div>
+            `;
+          })
+          .join("")
+      : `
+          <div style="color:#9fb8cf;">
+            Affected department information was not available in this dataset.
+          </div>
+        `;
 
   const topTypes = Object.entries(typeCounts)
     .sort((a, b) => b[1] - a[1])
