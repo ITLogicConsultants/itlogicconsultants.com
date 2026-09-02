@@ -485,7 +485,151 @@
   .department-chart-row {
     grid-template-columns: 120px 1fr 32px;
   }
-}   
+}  
+
+/* V95 - Operational Impact Map */
+
+.impact-map-panel {
+  margin: 26px 0;
+  padding: 24px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #091a31,
+      #0c2342
+    );
+
+  border: 1px solid #31577f;
+  border-radius: 14px;
+
+  box-shadow: 0 12px 30px rgba(0,0,0,0.20);
+}
+
+.impact-map-headings {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+
+  margin-bottom: 14px;
+  padding: 0 14px;
+
+  color: #7da9ff;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+}
+
+.impact-map-row {
+  display: grid;
+  grid-template-columns: minmax(160px, 220px) 1fr minmax(220px, 320px);
+  align-items: center;
+  gap: 16px;
+
+  margin-top: 12px;
+}
+
+.impact-map-issue,
+.impact-map-area {
+  padding: 12px 14px;
+
+  background: #102b4e;
+  border: 1px solid #31577f;
+  border-radius: 10px;
+
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.impact-map-issue-count,
+.impact-map-area-count {
+  color: #8eb9ff;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.impact-map-connector {
+  position: relative;
+  height: 2px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #5b8cff,
+      #42b8ff
+    );
+
+  opacity: 0.85;
+}
+
+.impact-map-connector::after {
+  content: "";
+  position: absolute;
+
+  right: -1px;
+  top: -4px;
+
+  width: 0;
+  height: 0;
+
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-left: 7px solid #42b8ff;
+}
+
+.impact-map-strength {
+  position: absolute;
+  left: 50%;
+  top: -20px;
+
+  transform: translateX(-50%);
+
+  padding: 2px 7px;
+
+  background: #071426;
+  border: 1px solid #31577f;
+  border-radius: 10px;
+
+  color: #9fb8cf;
+  font-size: 10px;
+  white-space: nowrap;
+}
+
+.impact-map-note {
+  margin-top: 22px;
+
+  color: #7f9bb7;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+@media (max-width: 750px) {
+
+  .impact-map-row {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .impact-map-headings {
+    display: none;
+  }
+
+  .impact-map-connector {
+    width: 2px;
+    height: 24px;
+    margin: auto;
+  }
+
+  .impact-map-connector::after {
+    display: none;
+  }
+
+  .impact-map-strength {
+    display: none;
+  }
+}    
+    
     
   </style>
 </head>
@@ -796,6 +940,37 @@
       
       </div>
 
+      <div class="impact-map-panel">
+
+        <div class="dashboard-visual-header">
+          <div>
+            <div class="dashboard-visual-title">
+              Operational Impact Map
+            </div>
+      
+            <div class="dashboard-visual-subtitle">
+              Observed relationships between issue activity and affected operational areas.
+            </div>
+          </div>
+      
+          <div class="dashboard-visual-badge">
+            OBSERVED SIGNALS
+          </div>
+        </div>
+      
+        <div class="impact-map-headings">
+          <div>ISSUE SIGNALS</div>
+          <div>AFFECTED AREAS</div>
+        </div>
+      
+        <div id="operational-impact-map"></div>
+      
+        <div class="impact-map-note">
+          Relationships shown are based on observed ticket activity and do not imply causation.
+        </div>
+      
+      </div>
+
       <div id="management-summary" class="management-summary">
         <div class="management-summary-label">Management Summary</div>
         <div id="operational-risk" class="operational-risk">
@@ -1094,6 +1269,108 @@ function analyzeTickets(tickets = sampleTickets) {
           </div>
         `;
 
+  const impactMap =
+    document.getElementById("operational-impact-map");
+  
+  const relationshipCounts = {};
+  
+  tickets.forEach(ticket => {
+  
+    const type =
+      String(ticket.type || "other")
+        .trim()
+        .toLowerCase();
+  
+    const department =
+      String(ticket.department || "").trim();
+  
+    if (
+      department &&
+      department !== "Unknown" &&
+      department !== "Affected area not available"
+    ) {
+  
+      const relationshipKey =
+        `${type}|||${department}`;
+  
+      relationshipCounts[relationshipKey] =
+        (relationshipCounts[relationshipKey] || 0) + 1;
+    }
+  
+  });
+  
+  const relationships =
+    Object.entries(relationshipCounts)
+      .map(([key, count]) => {
+  
+        const [type, department] =
+          key.split("|||");
+  
+        return {
+          type,
+          department,
+          count
+        };
+      })
+      .sort((a, b) => {
+  
+        if (b.count !== a.count) {
+          return b.count - a.count;
+        }
+  
+        const typeCompare =
+          a.type.localeCompare(b.type);
+  
+        if (typeCompare !== 0) {
+          return typeCompare;
+        }
+  
+        return a.department.localeCompare(b.department);
+      });
+  
+  impactMap.innerHTML =
+    relationships.length > 0
+      ? relationships
+          .map(item => {
+  
+            const strengthText =
+              item.count > 1
+                ? `${item.count} observed tickets`
+                : `1 observed ticket`;
+  
+            return `
+              <div class="impact-map-row">
+  
+                <div class="impact-map-issue">
+                  ${formatIssueType(item.type)}
+                  <div class="impact-map-issue-count">
+                    Issue signal
+                  </div>
+                </div>
+  
+                <div class="impact-map-connector">
+                  <div class="impact-map-strength">
+                    ${strengthText}
+                  </div>
+                </div>
+  
+                <div class="impact-map-area">
+                  ${item.department}
+                  <div class="impact-map-area-count">
+                    Affected area
+                  </div>
+                </div>
+  
+              </div>
+            `;
+          })
+          .join("")
+      : `
+          <div style="color:#9fb8cf;">
+            No issue-to-department relationships could be determined from this dataset.
+          </div>
+        `;
+  
   const topTypes = Object.entries(typeCounts)
     .sort((a, b) => b[1] - a[1])
     .slice(0, 2)
