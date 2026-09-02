@@ -224,7 +224,116 @@
         line-height: 1.6;
         color: #ffffff;
       }
+  /* V89 - Executive Dashboard */
+
+  .executive-dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
   
+    padding: 24px;
+    margin-bottom: 22px;
+  
+    background:
+      linear-gradient(
+        135deg,
+        #0a1c35 0%,
+        #102b4e 55%,
+        #14244c 100%
+      );
+  
+    border: 1px solid #315d91;
+    border-radius: 14px;
+  
+    box-shadow:
+      0 14px 40px rgba(0,0,0,0.28),
+      inset 0 1px 0 rgba(255,255,255,0.04);
+  }
+  
+  .dashboard-eyebrow {
+    color: #7da9ff;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 1.8px;
+    margin-bottom: 8px;
+  }
+  
+  .dashboard-title {
+    color: #ffffff;
+    font-size: 28px;
+    font-weight: 800;
+  }
+  
+  .dashboard-subtitle {
+    margin-top: 8px;
+    max-width: 680px;
+    color: #a9bfd8;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  
+  .dashboard-status {
+    padding: 9px 14px;
+  
+    background: rgba(24, 201, 126, 0.10);
+    border: 1px solid rgba(24, 201, 126, 0.45);
+  
+    color: #69e6aa;
+    border-radius: 20px;
+  
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 1px;
+  
+    white-space: nowrap;
+  }
+  
+  #results .metric-card {
+    position: relative;
+    overflow: hidden;
+  
+    background:
+      linear-gradient(
+        145deg,
+        #102b4e,
+        #0c203c
+      );
+  
+    border: 1px solid #31577f;
+  
+    box-shadow:
+      0 10px 24px rgba(0,0,0,0.18);
+  }
+  
+  #results .metric-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+  
+    background:
+      linear-gradient(
+        90deg,
+        #4f7cff,
+        #6e5cff,
+        #42b8ff
+      );
+  }
+  
+  #results .metric-value {
+    font-size: 32px;
+    letter-spacing: -0.5px;
+  }
+  
+  @media (max-width: 750px) {
+    .executive-dashboard-header {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+  }
   </style>
 </head>
 
@@ -367,11 +476,11 @@
 </div> 
     
     <div class="panel" id="demo-analysis">
-
-      <p>
-        The demo will use synthetic IT support tickets representing
-        realistic hospital and enterprise IT operations.
-      </p>
+      <h3>Demo Dataset</h3>
+        <p>
+          The demo will use synthetic IT support tickets representing
+          realistic hospital and enterprise IT operations.
+        </p>
 
       <button class="button" onclick="analyzeTickets()">
   Analyze Sample Tickets
@@ -417,7 +526,31 @@
         
     </div>
     <div id="results" style="display:none;" class="panel">
+      <div class="executive-dashboard-header">
+
+        <div>
+          <div class="dashboard-eyebrow">
+            EXECUTIVE OVERVIEW
+          </div>
+      
+          <div class="dashboard-title">
+            Weekly Operational Intelligence
+          </div>
+      
+          <div class="dashboard-subtitle">
+            A management view of ticket activity, operational patterns,
+            affected areas, priority, and risk.
+          </div>
+        </div>
+      
+        <div class="dashboard-status">
+          LIVE ANALYSIS
+        </div>
+      
+      </div>
+      
       <div id="data-quality"
+        
          style="
            margin-bottom:24px;
            padding:16px;
@@ -1621,6 +1754,8 @@ function generateManagerReport() {
           }
         }
       </style>
+
+            
     </head>
 
     <body>
