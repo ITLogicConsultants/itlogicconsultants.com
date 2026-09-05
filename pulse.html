@@ -816,6 +816,70 @@
       flex-direction: column;
     }
   }  
+
+  /* V99 - Top Recurring Patterns */
+
+  .recurring-pattern-row {
+    display: grid;
+    grid-template-columns: 150px 1fr 90px;
+    align-items: center;
+    gap: 14px;
+  
+    margin-top: 16px;
+  }
+  
+  .recurring-pattern-label {
+    color: #d6e4f0;
+    font-size: 14px;
+    font-weight: 700;
+  }
+  
+  .recurring-pattern-track {
+    height: 15px;
+  
+    background: #071426;
+    border-radius: 20px;
+  
+    overflow: hidden;
+  }
+  
+  .recurring-pattern-bar {
+    height: 100%;
+    min-width: 5px;
+  
+    background:
+      linear-gradient(
+        90deg,
+        #7d6cff,
+        #5b8cff,
+        #42b8ff
+      );
+  
+    border-radius: 20px;
+  }
+  
+  .recurring-pattern-count {
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 800;
+    text-align: right;
+  }
+  
+  .recurring-pattern-note {
+    margin-top: 18px;
+  
+    color: #9fb8cf;
+    font-size: 12px;
+    line-height: 1.5;
+  }
+  
+  @media (max-width: 750px) {
+  
+    .recurring-pattern-row {
+      grid-template-columns: 100px 1fr 65px;
+    }
+  
+  }  
     
   </style>
 </head>
@@ -1136,6 +1200,34 @@
       
       </div>
 
+     <!-- V99 - Top Recurring Patterns -->
+
+      <div class="dashboard-visual recurring-patterns-panel">
+
+        <div class="dashboard-visual-header">
+          <div>
+            <div class="dashboard-visual-title">
+              Top Recurring Patterns
+            </div>
+
+            <div class="dashboard-visual-subtitle">
+              Issue categories appearing repeatedly in the analyzed ticket activity.
+            </div>
+          </div>
+
+          <div class="dashboard-visual-badge">
+            RECURRING SIGNALS
+          </div>
+        </div>
+
+        <div id="recurring-patterns-chart">
+          <div style="color:#9fb8cf;">
+            Analyze ticket activity to identify recurring patterns.
+          </div>
+        </div>
+
+      </div>
+      
       <div class="dashboard-visual">
 
         <div class="dashboard-visual-header">
@@ -1464,6 +1556,72 @@ function analyzeTickets(tickets = sampleTickets) {
         `;
       })
       .join("");
+
+  /* V99 - Top Recurring Patterns */
+
+  const recurringPatternsChart =
+    document.getElementById("recurring-patterns-chart");
+  
+  const recurringPatternEntries =
+    Object.entries(typeCounts)
+      .filter(([, count]) => count >= 2)
+      .sort((a, b) => {
+  
+        if (b[1] !== a[1]) {
+          return b[1] - a[1];
+        }
+  
+        return a[0].localeCompare(b[0]);
+      });
+  
+  const maxRecurringCount =
+    recurringPatternEntries.length > 0
+      ? recurringPatternEntries[0][1]
+      : 1;
+  
+  recurringPatternsChart.innerHTML =
+    recurringPatternEntries.length > 0
+      ? recurringPatternEntries
+          .map(([type, count]) => {
+  
+            const width =
+              Math.round(
+                (count / maxRecurringCount) * 100
+              );
+  
+            return `
+              <div class="recurring-pattern-row">
+  
+                <div class="recurring-pattern-label">
+                  ${formatIssueType(type)}
+                </div>
+  
+                <div class="recurring-pattern-track">
+                  <div
+                    class="recurring-pattern-bar"
+                    style="width:${width}%;">
+                  </div>
+                </div>
+  
+                <div class="recurring-pattern-count">
+                  ${count} tickets
+                </div>
+  
+              </div>
+            `;
+          })
+          .join("") +
+        `
+          <div class="recurring-pattern-note">
+            A recurring pattern represents an issue category appearing
+            at least twice in the analyzed ticket activity.
+          </div>
+        `
+      : `
+          <div style="color:#9fb8cf;">
+            No recurring issue patterns were detected in this dataset.
+          </div>
+        `;                            
 
   const departmentChart =
     document.getElementById("department-chart");
