@@ -1777,6 +1777,159 @@ function analyzeTickets(tickets = sampleTickets) {
           </div>
         `;
 
+  /* V100 - Operational Risk Heat Map */
+
+  const riskHeatmap =
+    document.getElementById("risk-heatmap");
+  
+  const departmentSeverityCounts = {};
+  
+  tickets.forEach(ticket => {
+  
+    const department =
+      String(ticket.department || "").trim();
+  
+    if (
+      !department ||
+      department === "Unknown" ||
+      department === "Affected area not available"
+    ) {
+      return;
+    }
+  
+    const severity =
+      String(ticket.severity || "unknown")
+        .trim()
+        .toLowerCase();
+  
+    if (!departmentSeverityCounts[department]) {
+      departmentSeverityCounts[department] = {
+        critical: 0,
+        high: 0,
+        medium: 0,
+        low: 0,
+        unknown: 0
+      };
+    }
+  
+    if (
+      severity === "critical" ||
+      severity === "highest" ||
+      severity === "1"
+    ) {
+      departmentSeverityCounts[department].critical += 1;
+    }
+    else if (
+      severity === "high" ||
+      severity === "2"
+    ) {
+      departmentSeverityCounts[department].high += 1;
+    }
+    else if (severity === "medium") {
+      departmentSeverityCounts[department].medium += 1;
+    }
+    else if (severity === "low") {
+      departmentSeverityCounts[department].low += 1;
+    }
+    else {
+      departmentSeverityCounts[department].unknown += 1;
+    }
+  
+  });
+  
+  const departmentSeverityEntries =
+    Object.entries(departmentSeverityCounts)
+      .map(([department, counts]) => {
+  
+        let highestObservedPriority = "UNSPECIFIED";
+        let priorityRank = 0;
+  
+        if (counts.critical > 0) {
+          highestObservedPriority = "CRITICAL";
+          priorityRank = 4;
+        }
+        else if (counts.high > 0) {
+          highestObservedPriority = "HIGH";
+          priorityRank = 3;
+        }
+        else if (counts.medium > 0) {
+          highestObservedPriority = "MEDIUM";
+          priorityRank = 2;
+        }
+        else if (counts.low > 0) {
+          highestObservedPriority = "LOW";
+          priorityRank = 1;
+        }
+  
+        const total =
+          counts.critical +
+          counts.high +
+          counts.medium +
+          counts.low +
+          counts.unknown;
+  
+        return {
+          department,
+          counts,
+          total,
+          highestObservedPriority,
+          priorityRank
+        };
+      })
+      .sort((a, b) => {
+  
+        if (b.priorityRank !== a.priorityRank) {
+          return b.priorityRank - a.priorityRank;
+        }
+  
+        if (b.total !== a.total) {
+          return b.total - a.total;
+        }
+  
+        return a.department.localeCompare(b.department);
+      });
+  
+  riskHeatmap.innerHTML =
+    departmentSeverityEntries.length > 0
+      ? `
+          <div class="risk-heatmap-grid">
+  
+            ${departmentSeverityEntries
+              .map(item => `
+                <div class="risk-heatmap-card">
+  
+                  <div class="risk-heatmap-department">
+                    ${item.department}
+                  </div>
+  
+                  <div class="risk-heatmap-counts">
+                    <div>Critical: ${item.counts.critical}</div>
+                    <div>High: ${item.counts.high}</div>
+                    <div>Medium: ${item.counts.medium}</div>
+                    <div>Low: ${item.counts.low}</div>
+                  </div>
+  
+                  <div class="risk-heatmap-priority">
+                    HIGHEST OBSERVED: ${item.highestObservedPriority}
+                  </div>
+  
+                </div>
+              `)
+              .join("")}
+  
+          </div>
+  
+          <div class="risk-heatmap-note">
+            Priority shown is based only on observed ticket severity within each affected area.
+            It does not represent a calculated departmental risk score.
+          </div>
+        `
+      : `
+          <div style="color:#9fb8cf;">
+            Affected department information was not available for severity comparison.
+          </div>
+        `;
+  
   const impactMap =
     document.getElementById("operational-impact-map");
   
