@@ -1040,6 +1040,63 @@
       grid-template-columns: 82px minmax(0, 1fr) 48px;
     }
   } 
+
+  /* V106 - Customer Demo Risk Colors */
+
+  .risk-heatmap-card:has(.risk-heatmap-priority) {
+    transition: transform 0.15s ease;
+  }
+  
+  .risk-heatmap-card:has(.risk-heatmap-priority:hover) {
+    transform: translateY(-2px);
+  }
+  
+  /* HIGH */
+  .risk-heatmap-card:has(.risk-heatmap-priority) {
+    border-width: 1px;
+  }
+  
+  .risk-heatmap-card:has(.risk-heatmap-priority) {
+    --risk-accent: #f59e0b;
+  }
+  
+  /* Color cards from their rendered priority text */
+  .risk-heatmap-card:has(.risk-heatmap-priority) {
+    background: linear-gradient(
+      145deg,
+      #102b4e,
+      #132844
+    );
+  }
+  
+  .risk-heatmap-priority {
+    font-weight: 800;
+  }
+  
+  /* Priority-specific badge colors */
+  .risk-heatmap-priority[data-risk="CRITICAL"] {
+    color: #ff8b8b;
+    border-color: #ef4444;
+    background: rgba(239,68,68,0.12);
+  }
+  
+  .risk-heatmap-priority[data-risk="HIGH"] {
+    color: #ffc766;
+    border-color: #f59e0b;
+    background: rgba(245,158,11,0.12);
+  }
+  
+  .risk-heatmap-priority[data-risk="MEDIUM"] {
+    color: #fde047;
+    border-color: #eab308;
+    background: rgba(234,179,8,0.10);
+  }
+  
+  .risk-heatmap-priority[data-risk="LOW"] {
+    color: #69e6aa;
+    border-color: #22c55e;
+    background: rgba(34,197,94,0.10);
+  }
     
   </style>
 </head>
@@ -1995,7 +2052,8 @@ function analyzeTickets(tickets = sampleTickets) {
                     <div>Low: ${item.counts.low}</div>
                   </div>
   
-                  <div class="risk-heatmap-priority">
+                  <div class="risk-heatmap-priority"
+                    data-risk="${item.highestObservedPriority}">
                     HIGHEST OBSERVED: ${item.highestObservedPriority}
                   </div>
   
