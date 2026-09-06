@@ -1097,6 +1097,44 @@
     border-color: #22c55e;
     background: rgba(34,197,94,0.10);
   }
+
+  /* V108 - Full Risk Heat Map Colors */
+
+  .risk-heatmap-card:has(.risk-heatmap-priority[data-risk="CRITICAL"]) {
+    background: linear-gradient(
+      145deg,
+      rgba(239,68,68,0.24),
+      rgba(127,29,29,0.16)
+    );
+    border-color: #ef4444;
+  }
+  
+  .risk-heatmap-card:has(.risk-heatmap-priority[data-risk="HIGH"]) {
+    background: linear-gradient(
+      145deg,
+      rgba(245,158,11,0.22),
+      rgba(120,53,15,0.14)
+    );
+    border-color: #f59e0b;
+  }
+  
+  .risk-heatmap-card:has(.risk-heatmap-priority[data-risk="MEDIUM"]) {
+    background: linear-gradient(
+      145deg,
+      rgba(234,179,8,0.17),
+      rgba(113,63,18,0.11)
+    );
+    border-color: #eab308;
+  }
+  
+  .risk-heatmap-card:has(.risk-heatmap-priority[data-risk="LOW"]) {
+    background: linear-gradient(
+      145deg,
+      rgba(34,197,94,0.18),
+      rgba(20,83,45,0.11)
+    );
+    border-color: #22c55e;
+  }  
     
   </style>
 </head>
