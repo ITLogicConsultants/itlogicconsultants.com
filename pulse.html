@@ -880,6 +880,80 @@
     }
   
   }  
+
+  /* V100 - Operational Risk Heat Map */
+
+  .risk-heatmap-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+  }
+  
+  .risk-heatmap-card {
+    padding: 18px;
+  
+    background: #102b4e;
+    border: 1px solid #31577f;
+    border-radius: 12px;
+  }
+  
+  .risk-heatmap-department {
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 800;
+    line-height: 1.35;
+  }
+  
+  .risk-heatmap-counts {
+    margin-top: 14px;
+  
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  
+    color: #b5c9dc;
+    font-size: 12px;
+  }
+  
+  .risk-heatmap-priority {
+    margin-top: 16px;
+    padding: 7px 10px;
+  
+    display: inline-block;
+  
+    background: #081a30;
+    border: 1px solid #31577f;
+    border-radius: 20px;
+  
+    color: #d6e4f0;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+  }
+  
+  .risk-heatmap-note {
+    margin-top: 18px;
+  
+    color: #9fb8cf;
+    font-size: 12px;
+    line-height: 1.5;
+  }
+  
+  @media (max-width: 900px) {
+  
+    .risk-heatmap-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  
+  }
+  
+  @media (max-width: 550px) {
+  
+    .risk-heatmap-grid {
+      grid-template-columns: 1fr;
+    }
+  
+  }
     
   </style>
 </head>
@@ -1249,6 +1323,38 @@
         <div id="department-chart"></div>
       
       </div>
+
+        <!-- V100 - Operational Risk Heat Map -->
+
+        <div class="dashboard-visual risk-heatmap-panel">
+  
+          <div class="dashboard-visual-header">
+  
+            <div>
+              <div class="dashboard-visual-title">
+                Operational Risk Heat Map
+              </div>
+  
+              <div class="dashboard-visual-subtitle">
+                Ticket severity concentration across affected operational areas.
+              </div>
+            </div>
+  
+            <div class="dashboard-visual-badge">
+              OBSERVED PRIORITY
+            </div>
+  
+          </div>
+  
+          <div id="risk-heatmap">
+  
+            <div style="color:#9fb8cf;">
+              Analyze ticket activity to view severity concentration by department.
+            </div>
+  
+          </div>
+  
+        </div>
 
       <div class="impact-map-panel">
 
@@ -2989,6 +3095,9 @@ function generateManagerReport() {
             display: none;
           }
         }
+
+      
+        
       </style>
 
             
