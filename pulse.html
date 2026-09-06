@@ -954,6 +954,92 @@
     }
   
   }
+
+  /* V104 - Final Demo Color Cleanup */
+
+  #results .metric-card::before,
+  .issue-chart-bar,
+  .department-chart-bar,
+  .recurring-pattern-bar {
+    background:
+      linear-gradient(
+        90deg,
+        #1677ff,
+        #2f9cff,
+        #42d4ff
+      );
+  }
+  
+  .management-summary,
+  .key-insight {
+    border-left-color: #2f9cff;
+  }
+  
+  .weekly-trend-assessment,
+  .executive-attention {
+    border-left-color: #2f9cff;
+  }    
+
+ /* V104 - Final Responsive Demo Hardening */
+
+  @media (max-width: 750px) {
+  
+    .page {
+      padding: 24px 12px;
+    }
+  
+    h1 {
+      font-size: 34px;
+    }
+  
+    .panel,
+    .dashboard-visual,
+    .impact-map-panel,
+    .weekly-trend-panel {
+      padding: 18px;
+    }
+  
+    .department-chart-row,
+    .issue-chart-row,
+    .recurring-pattern-row {
+      grid-template-columns: 95px minmax(0, 1fr) 55px;
+      gap: 8px;
+    }
+  
+    .department-chart-label,
+    .issue-chart-label,
+    .recurring-pattern-label {
+      overflow-wrap: anywhere;
+    }
+  
+    .recurring-pattern-count {
+      font-size: 12px;
+    }
+  
+    .dashboard-title {
+      font-size: 24px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+  
+    .page {
+      padding: 18px 8px;
+    }
+  
+    .panel,
+    .dashboard-visual,
+    .impact-map-panel,
+    .weekly-trend-panel {
+      padding: 14px;
+    }
+  
+    .department-chart-row,
+    .issue-chart-row,
+    .recurring-pattern-row {
+      grid-template-columns: 82px minmax(0, 1fr) 48px;
+    }
+  } 
     
   </style>
 </head>
@@ -982,7 +1068,7 @@
           font-weight:800;
           color:#ffffff;
         ">
-          HI2P <span style="color:#5b8cff;">Pulse</span>
+          HI2P <span style="color:#2f9cff;">Pulse</span>
         </div>
 
         <div style="
