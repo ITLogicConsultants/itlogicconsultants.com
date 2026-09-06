@@ -1089,7 +1089,334 @@
     background: #102b4e !important;
     border: 1px solid #31577f !important;
   }   
-  </style>
+  
+  /* V113 - COMPLETE CUSTOMER DEMO COLOR SYSTEM
+     Visual-only hardening. Existing analysis/risk logic is unchanged. */
+
+  :root {
+    --pulse-blue: #2f9cff;
+    --pulse-cyan: #35d0ff;
+    --pulse-purple: #8b5cf6;
+    --pulse-green: #22c55e;
+    --pulse-amber: #f59e0b;
+    --pulse-yellow: #eab308;
+    --pulse-red: #ef4444;
+  }
+
+  /* Stronger executive header */
+  .executive-dashboard-header {
+    background:
+      radial-gradient(circle at 88% 15%, rgba(53,208,255,0.18), transparent 28%),
+      radial-gradient(circle at 12% 85%, rgba(139,92,246,0.16), transparent 30%),
+      linear-gradient(135deg, #0a1c35 0%, #102b4e 55%, #14244c 100%);
+    border-color: rgba(53,208,255,0.48);
+  }
+
+  .dashboard-eyebrow {
+    color: #65dcff;
+  }
+
+  .dashboard-status {
+    color: #76f0b1;
+    background: rgba(34,197,94,0.13);
+    border-color: rgba(34,197,94,0.55);
+    box-shadow: 0 0 20px rgba(34,197,94,0.08);
+  }
+
+  /* KPI cards: six distinct accents, same professional dark base */
+  #results .metric-card {
+    background: linear-gradient(145deg, #102b4e, #0c203c);
+  }
+
+  #results .metric-card:nth-child(1) {
+    border-color: rgba(47,156,255,0.58);
+  }
+  #results .metric-card:nth-child(1)::before {
+    background: linear-gradient(90deg, #1677ff, #35d0ff);
+  }
+  #results .metric-card:nth-child(1) .metric-value {
+    color: #69c7ff;
+  }
+
+  #results .metric-card:nth-child(2) {
+    border-color: rgba(139,92,246,0.58);
+  }
+  #results .metric-card:nth-child(2)::before {
+    background: linear-gradient(90deg, #7c3aed, #a78bfa);
+  }
+  #results .metric-card:nth-child(2) .metric-value {
+    color: #b9a5ff;
+  }
+
+  #results .metric-card:nth-child(3) {
+    border-color: rgba(34,197,94,0.52);
+  }
+  #results .metric-card:nth-child(3)::before {
+    background: linear-gradient(90deg, #16a34a, #69e6aa);
+  }
+  #results .metric-card:nth-child(3) .metric-value {
+    color: #69e6aa;
+  }
+
+  #results .metric-card:nth-child(4) {
+    border-color: rgba(245,158,11,0.55);
+  }
+  #results .metric-card:nth-child(4)::before {
+    background: linear-gradient(90deg, #f59e0b, #ffd166);
+  }
+  #results .metric-card:nth-child(4) .metric-value {
+    color: #ffc766;
+  }
+
+  #results .metric-card:nth-child(5) {
+    border-color: rgba(239,68,68,0.52);
+  }
+  #results .metric-card:nth-child(5)::before {
+    background: linear-gradient(90deg, #ef4444, #ff8b8b);
+  }
+  #results .metric-card:nth-child(5) .metric-value {
+    color: #ff8b8b;
+  }
+
+  #results .metric-card:nth-child(6) {
+    border-color: rgba(53,208,255,0.52);
+  }
+  #results .metric-card:nth-child(6)::before {
+    background: linear-gradient(90deg, #06b6d4, #35d0ff);
+  }
+  #results .metric-card:nth-child(6) .metric-value {
+    color: #70ddff;
+  }
+
+  /* Executive attention becomes visibly actionable without muddy fills */
+  .executive-attention {
+    background:
+      linear-gradient(135deg, rgba(245,158,11,0.11), rgba(16,43,78,0.96));
+    border-color: rgba(245,158,11,0.48);
+    border-left-color: #f59e0b;
+  }
+
+  .executive-attention-eyebrow {
+    color: #ffc766;
+  }
+
+  .executive-attention-status {
+    color: #ffc766;
+    background: rgba(245,158,11,0.10);
+    border-color: rgba(245,158,11,0.55);
+  }
+
+  /* Chart families use different palettes so the dashboard is not all blue */
+  .issue-chart-bar {
+    background: linear-gradient(90deg, #8b5cf6, #d946ef, #35d0ff);
+  }
+
+  .recurring-pattern-bar {
+    background: linear-gradient(90deg, #f59e0b, #ff7a59, #ef5da8);
+  }
+
+  .department-chart-bar {
+    background: linear-gradient(90deg, #16a34a, #22c55e, #35d0ff);
+  }
+
+  /* Section badges carry visual identity */
+  .dashboard-visual-badge {
+    color: #70ddff;
+    background: rgba(53,208,255,0.09);
+    border-color: rgba(53,208,255,0.38);
+  }
+
+  .recurring-patterns-panel .dashboard-visual-badge {
+    color: #ffb86b;
+    background: rgba(245,158,11,0.09);
+    border-color: rgba(245,158,11,0.42);
+  }
+
+  .risk-heatmap-panel .dashboard-visual-badge {
+    color: #ffc766;
+    background: rgba(245,158,11,0.09);
+    border-color: rgba(245,158,11,0.42);
+  }
+
+  .impact-map-panel .dashboard-visual-badge {
+    color: #b9a5ff;
+    background: rgba(139,92,246,0.10);
+    border-color: rgba(139,92,246,0.42);
+  }
+
+  .weekly-trend-panel .dashboard-visual-badge {
+    color: #69e6aa;
+    background: rgba(34,197,94,0.09);
+    border-color: rgba(34,197,94,0.42);
+  }
+
+  /* Heat Map: dark cards remain readable; priority appears as a colored signal strip/pill */
+  .risk-heatmap-card,
+  .risk-heatmap-card:has(.risk-heatmap-priority) {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(145deg, #102b4e, #0d2442) !important;
+    border: 1px solid #31577f !important;
+  }
+
+  .risk-heatmap-card:has(.risk-heatmap-priority[data-risk="CRITICAL"]) {
+    border-top: 4px solid #ef4444 !important;
+    box-shadow: inset 0 10px 28px rgba(239,68,68,0.07);
+  }
+
+  .risk-heatmap-card:has(.risk-heatmap-priority[data-risk="HIGH"]) {
+    border-top: 4px solid #f59e0b !important;
+    box-shadow: inset 0 10px 28px rgba(245,158,11,0.06);
+  }
+
+  .risk-heatmap-card:has(.risk-heatmap-priority[data-risk="MEDIUM"]) {
+    border-top: 4px solid #eab308 !important;
+    box-shadow: inset 0 10px 28px rgba(234,179,8,0.05);
+  }
+
+  .risk-heatmap-card:has(.risk-heatmap-priority[data-risk="LOW"]) {
+    border-top: 4px solid #22c55e !important;
+    box-shadow: inset 0 10px 28px rgba(34,197,94,0.05);
+  }
+
+  .risk-heatmap-priority[data-risk="CRITICAL"] {
+    color: #ff9a9a;
+    border-color: #ef4444;
+    background: rgba(239,68,68,0.14);
+  }
+
+  .risk-heatmap-priority[data-risk="HIGH"] {
+    color: #ffd166;
+    border-color: #f59e0b;
+    background: rgba(245,158,11,0.14);
+  }
+
+  .risk-heatmap-priority[data-risk="MEDIUM"] {
+    color: #fde047;
+    border-color: #eab308;
+    background: rgba(234,179,8,0.12);
+  }
+
+  .risk-heatmap-priority[data-risk="LOW"] {
+    color: #76f0b1;
+    border-color: #22c55e;
+    background: rgba(34,197,94,0.12);
+  }
+
+  /* Impact map: purple/cyan signal flow */
+  .impact-map-panel {
+    background:
+      radial-gradient(circle at 15% 15%, rgba(139,92,246,0.10), transparent 26%),
+      radial-gradient(circle at 85% 80%, rgba(53,208,255,0.08), transparent 28%),
+      linear-gradient(145deg, #091a31, #0c2342);
+    border-color: rgba(139,92,246,0.40);
+  }
+
+  .impact-map-headings {
+    color: #b9a5ff;
+  }
+
+  .impact-map-issue {
+    border-color: rgba(139,92,246,0.55);
+    box-shadow: inset 3px 0 0 #8b5cf6;
+  }
+
+  .impact-map-area {
+    border-color: rgba(53,208,255,0.50);
+    box-shadow: inset -3px 0 0 #35d0ff;
+  }
+
+  .impact-map-connector {
+    background: linear-gradient(90deg, #8b5cf6, #35d0ff);
+  }
+
+  .impact-map-connector::after {
+    border-left-color: #35d0ff;
+  }
+
+  .impact-map-issue-count {
+    color: #b9a5ff;
+  }
+
+  .impact-map-area-count {
+    color: #70ddff;
+  }
+
+  /* Weekly trend and management intelligence */
+  .weekly-trend-panel {
+    border-color: rgba(34,197,94,0.34);
+  }
+
+  .weekly-trend-assessment {
+    border-left-color: #22c55e;
+  }
+
+  .management-summary {
+    background:
+      linear-gradient(135deg, rgba(47,156,255,0.09), #14223d 45%);
+    border-left-color: #2f9cff;
+  }
+
+  .management-summary-label {
+    color: #70ddff;
+  }
+
+  .signals-grid .signal-card:nth-child(1) {
+    border-color: rgba(139,92,246,0.50);
+    box-shadow: inset 0 3px 0 #8b5cf6;
+  }
+
+  .signals-grid .signal-card:nth-child(2) {
+    border-color: rgba(53,208,255,0.48);
+    box-shadow: inset 0 3px 0 #35d0ff;
+  }
+
+  .signals-grid .signal-card:nth-child(3) {
+    border-color: rgba(245,158,11,0.50);
+    box-shadow: inset 0 3px 0 #f59e0b;
+  }
+
+  .signals-grid .signal-card:nth-child(1) .signal-value {
+    color: #b9a5ff;
+  }
+
+  .signals-grid .signal-card:nth-child(2) .signal-value {
+    color: #70ddff;
+  }
+
+  .signals-grid .signal-card:nth-child(3) .signal-value {
+    color: #ffc766;
+  }
+
+  .recommended-actions {
+    border-color: rgba(34,197,94,0.42);
+    box-shadow: inset 4px 0 0 #22c55e;
+  }
+
+  .recommended-actions-title {
+    color: #69e6aa;
+  }
+
+  .key-insight {
+    border-left-color: #8b5cf6;
+    background:
+      linear-gradient(135deg, rgba(139,92,246,0.10), #14223d 48%);
+  }
+
+  .key-insight-title {
+    color: #b9a5ff;
+  }
+
+  .weekly-change {
+    border-color: rgba(53,208,255,0.40);
+    box-shadow: inset 4px 0 0 #35d0ff;
+  }
+
+  .weekly-change-title {
+    color: #70ddff;
+  }
+
+</style>
 </head>
 
 <body>
