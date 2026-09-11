@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>ITLOGIC AI Knowledge Assistant | Sample Demo</title>
+
+  <meta name="description"
+        content="Sample demonstration of the ITLOGIC AI Knowledge Assistant for IT support teams." />
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #071426;
+      color: #ffffff;
+    }
+
+    nav {
+      background: #04101f;
+      padding: 15px 20px;
+      text-align: center;
+    }
+
+    nav a {
+      color: white;
+      margin: 0 18px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    nav a:hover {
+      color: #4db4ff;
+    }
+
+    header {
+      background: linear-gradient(135deg, #071426, #0d2b52);
+      padding: 55px 20px;
+      text-align: center;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 7px 15px;
+      border: 1px solid #2d6ca5;
+      border-radius: 25px;
+      color: #76c3ff;
+      font-size: 12px;
+      font-weight: bold;
+      letter-spacing: 1.4px;
+      margin-bottom: 15px;
+    }
+
+    header h1 {
+      color: #4db4ff;
+      font-size: 38px;
+      margin: 10px 0;
+    }
+
+    header h2 {
+      font-size: 21px;
+      font-weight: normal;
+      margin: 12px 0;
+    }
+
+    header p {
+      max-width: 760px;
+      margin: 18px auto 0;
+      color: #d6e4f0;
+      line-height: 1.6;
+    }
+
+    main {
+      max-width: 950px;
+      margin: auto;
+      padding: 40px 20px 60px;
+    }
+
+    .demo-label {
+      text-align: center;
+      color: #76c3ff;
+      font-weight: bold;
+      letter-spacing: 1px;
+      margin-bottom: 25px;
+    }
+
+    .question {
+      background: #102b4d;
+      border: 1px solid #28527d;
+      border-radius: 12px;
+      padding: 22px;
+      margin-bottom: 18px;
+    }
+
+    .question-label {
+      color: #76c3ff;
+      font-size: 13px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .question p {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.5;
+    }
+
+    .answer {
+      background: #0d2340;
+      border: 1px solid #1e4975;
+      border-radius: 12px;
+      padding: 28px;
+    }
+
+    .answer-label {
+      color: #4db4ff;
+      font-size: 13px;
+      font-weight: bold;
+      margin-bottom: 14px;
+    }
+
+    .answer p,
+    .answer li {
+      color: #e4edf7;
+      line-height: 1.65;
+    }
+
+    .answer ol {
+      padding-left: 24px;
+    }
+
+    .sources {
+      margin-top: 25px;
+      padding: 20px;
+      background: #091a30;
+      border-radius: 9px;
+      border-left: 4px solid #4db4ff;
+    }
+
+    .sources h3 {
+      margin-top: 0;
+      color: #76c3ff;
+      font-size: 16px;
+    }
+
+    .source {
+      margin: 9px 0;
+      color: #d6e4f0;
+    }
+
+    .verification {
+      margin-top: 18px;
+      font-size: 13px;
+      color: #9fb2c7;
+    }
+
+    .workflow {
+      margin-top: 45px;
+      text-align: center;
+    }
+
+    .workflow h2 {
+      font-size: 28px;
+    }
+
+    .workflow-items {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 25px;
+    }
+
+    .workflow-item {
+      background: #102b4d;
+      border: 1px solid #28527d;
+      border-radius: 25px;
+      padding: 10px 17px;
+      color: #b9dcff;
+    }
+
+    .arrow {
+      color: #4db4ff;
+      font-weight: bold;
+    }
+
+    .pilot {
+      margin-top: 50px;
+      padding: 35px;
+      text-align: center;
+      background: #0b1d35;
+      border: 1px solid #1e4975;
+      border-radius: 14px;
+    }
+
+    .pilot h2 {
+      color: #4db4ff;
+      font-size: 30px;
+      margin-top: 0;
+    }
+
+    .price {
+      font-size: 38px;
+      font-weight: bold;
+      margin: 15px 0;
+    }
+
+    .pilot p {
+      max-width: 680px;
+      margin: 12px auto;
+      line-height: 1.6;
+      color: #d6e4f0;
+    }
+
+    .button {
+      display: inline-block;
+      margin-top: 22px;
+      padding: 13px 24px;
+      background: #1677ff;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: bold;
+    }
+
+    .button:hover {
+      background: #0f5fcc;
+    }
+
+    .back {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    .back a {
+      color: #76c3ff;
+      text-decoration: none;
+    }
+
+    footer {
+      background: #04101f;
+      text-align: center;
+      padding: 30px 20px;
+      color: #9fb2c7;
+    }
+
+    @media (max-width: 650px) {
+
+      header h1 {
+        font-size: 30px;
+      }
+
+      nav a {
+        margin: 0 8px;
+        font-size: 14px;
+      }
+
+      .arrow {
+        display: none;
+      }
+
+    }
+
+  </style>
+</head>
+
+
+<body>
+
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="index.html#services">Services</a>
+    <a href="index.html#hi2p">Featured Work</a>
+    <a href="index.html#contact">Contact</a>
+  </nav>
+
+
+  <header>
+
+    <div class="badge">
+      SAMPLE DEMONSTRATION
+    </div>
+
+    <h1>ITLOGIC AI Knowledge Assistant</h1>
+
+    <h2>
+      AI-Powered Knowledge Search for IT Support Teams
+    </h2>
+
+    <p>
+      Help technicians find answers from existing troubleshooting guides,
+      SOPs, runbooks, and internal documentation — with the supporting
+      source shown for verification.
+    </p>
+
+  </header>
+
+
+  <main>
+
+    <div class="demo-label">
+      EXAMPLE TECHNICIAN INTERACTION
+    </div>
+
+
+    <div class="question">
+
+      <div class="question-label">
+        TECHNICIAN QUESTION
+      </div>
+
+      <p>
+        A user changed their Active Directory password this morning.
+        Now their VPN authentication fails. What should I check?
+      </p>
+
+    </div>
+
+
+    <div class="answer">
+
+      <div class="answer-label">
+        AI KNOWLEDGE ASSISTANT
+      </div>
+
+      <p>
+        Based on the organization's sample troubleshooting documentation,
+        check the following:
+      </p>
+
+      <ol>
+
+        <li>
+          Verify that the user's new Active Directory password works
+          for normal domain authentication.
+        </li>
+
+        <li>
+          Check whether the VPN client has cached the user's previous
+          credentials.
+        </li>
+
+        <li>
+          Clear the cached VPN credentials and reconnect using the
+          new password.
+        </li>
+
+        <li>
+          Check the user's Active Directory account for a lockout
+          caused by repeated authentication attempts.
+        </li>
+
+        <li>
+          If authentication continues to fail, follow the documented
+          VPN authentication escalation procedure.
+        </li>
+
+      </ol>
+
+
+      <div class="sources">
+
+        <h3>Sources Used</h3>
+
+        <div class="source">
+          📄 VPN_Troubleshooting_Guide.pdf — Section 4.2
+        </div>
+
+        <div class="source">
+          📄 Password_Reset_Runbook.pdf — Section 3.1
+        </div>
+
+      </div>
+
+
+      <div class="verification">
+        Sample response for demonstration purposes. In a configured pilot,
+        answers would be generated from the customer's approved knowledge sources.
+      </div>
+
+    </div>
+
+
+    <div class="workflow">
+
+      <h2>How It Works</h2>
+
+      <div class="workflow-items">
+
+        <div class="workflow-item">
+          Your IT Documentation
+        </div>
+
+        <div class="arrow">→</div>
+
+        <div class="workflow-item">
+          AI Knowledge Retrieval
+        </div>
+
+        <div class="arrow">→</div>
+
+        <div class="workflow-item">
+          Grounded Answer
+        </div>
+
+        <div class="arrow">→</div>
+
+        <div class="workflow-item">
+          Source Verification
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="pilot">
+
+      <div class="badge">
+        LIMITED PILOT
+      </div>
+
+      <h2>Try It With Your Own IT Knowledge</h2>
+
+      <div class="price">
+        $250 Pilot
+      </div>
+
+      <p>
+        ITLOGIC will configure a small proof-of-concept using up to
+        20 selected troubleshooting guides, SOPs, runbooks, or other
+        approved IT knowledge documents.
+      </p>
+
+      <p>
+        The goal is simple: determine whether technicians can find useful
+        answers faster using the knowledge your organization already has.
+      </p>
+
+      <a class="button"
+         href="https://contra.com/itlogic_consulting_r2k6d9ns"
+         target="_blank">
+        Discuss a Pilot
+      </a>
+
+    </div>
+
+
+    <div class="back">
+      <a href="index.html">
+        ← Back to ITLOGIC Consultants
+      </a>
+    </div>
+
+  </main>
+
+
+  <footer>
+    © 2026 ITLOGIC Consultants LLC • Chandler, Arizona
+  </footer>
+
+</body>
+
+</html>
