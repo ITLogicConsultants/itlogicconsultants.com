@@ -3537,7 +3537,7 @@ function generateManagerReport() {
     .map(value => new Date(value))
     .filter(date => !isNaN(date));
   
-  let reportingPeriod = "Not provided in export";
+  let reportingPeriod = "Sample Demonstration";
   
   if (ticketDates.length > 0) {
     const earliest = new Date(Math.min(...ticketDates));
