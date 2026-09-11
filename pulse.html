@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />function generateManagerReport() {
+  
   <title>HI2P Pulse Demo | ITLOGIC Consultants LLC</title>
 
   <style>
@@ -3519,17 +3520,17 @@ function generateManagerReport() {
   ];
   
   const sourceSystemText =
-    sourceSystems.length > 0
-      ? sourceSystems
-          .map(source =>
-            source === "servicenow"
-              ? "ServiceNow"
-              : source === "jira"
-                ? "Jira"
-                : source
-          )
-          .join(", ")
-      : "Unknown";
+  sourceSystems.length > 0
+    ? sourceSystems
+        .map(source =>
+          source === "servicenow"
+            ? "ServiceNow"
+            : source === "jira"
+              ? "Jira"
+              : source
+        )
+        .join(", ")
+    : "Built-in Sample Dataset";
   
   const ticketDates = currentTickets
     .map(ticket => ticket.opened_at)
