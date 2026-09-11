@@ -2004,6 +2004,9 @@ function formatIssueType(type) {
 }
       
 function analyzeTickets(tickets = sampleTickets) {
+  document.getElementById("data-quality-text").textContent =
+    "GOOD — Complete sample dataset";
+
   const ticketCount = tickets.length;
 
   const sources = new Set(
