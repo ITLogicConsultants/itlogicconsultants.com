@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Business Reporting &amp; Automation | ITLOGIC Consultants LLC</title>
+<meta name="description" content="Automate one CSV or Excel reporting workflow with a management dashboard and basic rule-based alerts. Explore ITLOGIC's fictional-data proof of concept and a scoped $250 introductory pilot.">
+<style>
+:root{color-scheme:dark;--bg:#071426;--panel:#0d2340;--border:#1e4975;--blue:#4db4ff;--text:#d6e4f0}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:#fff;font:17px/1.65 Arial,Helvetica,sans-serif}a{color:#8cd0ff}nav{background:#04101f;padding:16px 5%;display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap}nav a{font-weight:bold;text-decoration:none}header{text-align:center;padding:72px 20px 56px;background:linear-gradient(135deg,#071426,#0d2b52)}.badge{display:inline-block;border:1px solid #2d6ca5;border-radius:24px;padding:6px 15px;color:#76c3ff;font-size:13px;letter-spacing:1px;font-weight:bold}h1{font-size:clamp(30px,5vw,48px);line-height:1.2;margin:20px 0}header p{max-width:760px;margin:0 auto;color:var(--text)}main{max-width:1100px;margin:auto;padding:30px 20px 70px}h2{color:var(--blue);margin-top:35px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px}.card{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:24px}.card h3{color:var(--blue);margin-top:0}.note{border-left:4px solid var(--blue);background:#102b4d;padding:16px 20px;border-radius:6px}.button{display:inline-block;background:#1677ff;color:#fff;text-decoration:none;font-weight:bold;border-radius:8px;padding:14px 22px;margin:12px 12px 0 0}.button:hover{background:#0f5fcc}.button.secondary{background:transparent;border:1px solid var(--blue)}ul{padding-left:24px}footer{background:#04101f;text-align:center;padding:28px;color:#9fb2c7}@media(max-width:600px){header{padding:52px 20px}nav{justify-content:center}}
+</style>
+</head>
+<body>
+<nav><a href="index.html">← ITLOGIC Home</a><a href="index.html#services">Services</a><a href="index.html#contact">Contact</a></nav>
+<header>
+<span class="badge">WORKING PROOF OF CONCEPT • FICTIONAL DATA</span>
+<h1>Business Reporting &amp; Automation</h1>
+<p>Turn repetitive spreadsheet and CSV reporting into a repeatable process with clear metrics, management-ready output, and rule-based alerts.</p>
+<a class="button" href="#pilot">Explore the $250 Pilot</a>
+<a class="button secondary" href="#proof">See What We Built</a>
+</header>
+<main>
+<section>
+<h2>The business problem</h2>
+<p>Teams often combine booking, sales, or operations files manually to produce the same report each week. That can take time, create inconsistent calculations, and delay decisions. ITLOGIC can assess one defined reporting workflow and automate its repeatable steps.</p>
+</section>
+<section id="proof">
+<h2>Proof of concept: commercial reporting</h2>
+<p>We built a Python-based reporting demonstration for fictional transportation departures. It reads structured CSV inputs and produces reports showing seats sold, revenue, occupancy, break-even gap, booking velocity, and recommended follow-up actions based on configurable rules.</p>
+<div class="grid">
+<div class="card"><h3>Inputs</h3><p>Departure records, bookings, historical daily snapshots, and alert rules supplied as CSV files.</p></div>
+<div class="card"><h3>Automated outputs</h3><p>Departure KPI CSV, route summary CSV, a browser-viewable HTML dashboard, a data-quality log, and SQLite records.</p></div>
+<div class="card"><h3>Decision support</h3><p>Rule-based commercial alerts flag low booking volumes within a configured time window and suggest a review action.</p></div>
+</div>
+<p class="note"><strong>Verified demonstration status:</strong> The application generated three fictional departure reports with zero reported data-quality issues in the demonstration run. Five automated unit tests passed. The browser dashboard displayed commercial intervention alerts after a test-rule configuration change. These are POC test results, not independent certification or evidence of a customer deployment.</p>
+</section>
+<section id="pilot">
+<h2>Introductory pilot — starting at $250</h2>
+<div class="card">
+<h3>One reporting workflow, clearly scoped</h3>
+<ul>
+<li>Review one existing CSV or Excel reporting process and agree on required columns and calculations.</li>
+<li>Automate one repeatable workflow using a sample or approved customer dataset.</li>
+<li>Deliver one browser-viewable dashboard or management report, plus basic rule-based alerts where the supplied data supports them.</li>
+<li>Include a short handover explaining how to run the report and interpret its output.</li>
+</ul>
+<p><strong>Scope boundaries:</strong> The $250 starting price assumes one manageable workflow with clean, accessible input files and agreed acceptance criteria. Complex integrations, live API connections, data cleanup at scale, hosting, and ongoing support require separate scoping and pricing.</p>
+<a class="button" href="mailto:itlogic1040@gmail.com?subject=Business%20Reporting%20Automation%20Pilot%20Inquiry&amp;body=Hello%20ITLOGIC%2C%0A%0AI%20would%20like%20to%20discuss%20one%20reporting%20workflow.%0A%0AMy%20current%20inputs%3A%0AMy%20desired%20report%3A%0AHow%20often%20I%20need%20it%3A">Request a Pilot Discussion</a>
+</div>
+</section>
+<section>
+<h2>What this demo does not claim</h2>
+<p>This demonstration uses fictional data. It does not establish production reliability, live third-party integrations, an AI prediction engine, or verified financial results for a customer. Customer-specific requirements and acceptance tests are agreed before work begins.</p>
+</section>
+</main>
+<footer>© 2026 ITLOGIC Consultants LLC • Chandler, Arizona • <a href="index.html">Return to homepage</a></footer>
+</body>
+</html>
